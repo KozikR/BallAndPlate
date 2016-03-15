@@ -36,20 +36,28 @@ phi2=0*pi/2;
 sim('model.mdl',10);
 subplot(2,2,1);
 plot(x,y);
+xlabel('x');
+ylabel('y');
 title('polozenie kulki');
 subplot(2,2,2);
-plot(x);
+plot(tout,x);
+xlabel('t');
+ylabel('x');
 title('polozenie w osi x');
 subplot(2,2,3);
 hold on;
-plot(u1,'r');
-plot(u2,'g');
+plot(tout,u1,'r');
+plot(tout,u2,'g');
+xlabel('t');
+ylabel('\alpha , \beta');
 hold off;
 title('k¹t po³o¿enia stolika  wczasie');
 legend('nachylenie dla x','nachylenie dla y');
 subplot(2,2,4);
-plot(y);
+plot(tout,y);
 title('polozenie w osi y');
+xlabel('t');
+ylabel('y');
 %x1-x - polozenie kulki
 %x2-x' predkosc kulki
 %x3-alpha nachylenie stolika
