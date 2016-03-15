@@ -3,26 +3,35 @@ clear all; close all;
 format compact; format long e;
 
 %% Data - initial state, parameters, time, control function
-T = 1;  % time of simulation
-x0 = [0, 0, 0.00000005, 0,0,-0.0000005]; % position x, velocity x, position y, velocity y 
-
+%T = 10;  % time of simulation
+%x0 = [0, 0, 0.00000005,0, 0,0,-0.0000005,0]; % position x, velocity x, position y, velocity y 
+%x0=[0; 0; 3.14151; 0; 0; 0; -3.14159269; 0];
+x0=[0; 1; 1; 0; 0; -1; -1; 0];
 % models parameters
 M = 0.040;      % mass of ball, kg
 R = 0.0015;     % Radius of ball, m
 I = 2/5*M*R^2;  % Moment of inertia of ball
 g = 9.81;       % gravitational acceleration
 
-a1=0.000001;
-a2=0.000001;
+% a1=0.00001;
+% a2=0.00001;
+% freq2=2;
+% freq1=freq2;
+% phi1=1*pi/2;
+% phi2=2*pi/2;
+
+a1=0;
+a2=0;
 freq2=2;
 freq1=freq2;
-phi1=3*pi/2;
-phi2=0*pi/2;
+phi1=1*pi/2;
+phi2=2*pi/2;
 
+T=10;
 % control function - angular position of table
-% step = 10;  % number of przedzia³y strukturalne -> znaleœæ t³umaczenie
-% tau = linspace(0, t, step+1);
-% u = [sin(tau), cos(tau)];
+step = 50;  % number of przedzia³y strukturalne -> znaleœæ t³umaczenie
+tau = linspace(0, T, step+1);
+u = [a1*sin(freq1*tau+phi1); a2*sin(freq2*tau+phi2)];
 % 
 % % step in rk4, ~0.01
 % dtau = diff(tau);
@@ -33,38 +42,67 @@ phi2=0*pi/2;
 % x = zeros(cn(end), 2);  % memory for solution
 % t = zeros(cn(end), 1);  % vector of time       
 %% Solving
-sim('model.mdl',10);
-subplot(2,2,1);
-plot(x,y);
+% sim('model.mdl',10);
+
+
+[t x]=ode45(@(t, x) rhs(t, x, u, M, R, I, g),tau,x0);
+
+
+
+
+
+%% Print data% subplot(2,2,1);
+subplot(231)
+plot(x(:,1),x(:,5));
 xlabel('x');
 ylabel('y');
 title('polozenie kulki');
-subplot(2,2,2);
-plot(tout,x);
-xlabel('t');
-ylabel('x');
-title('polozenie w osi x');
-subplot(2,2,3);
+subplot(2,3,2);
 hold on;
-plot(tout,u1,'r');
-plot(tout,u2,'g');
+
+plot(t,u(1,:),'r');
+plot(t,u(2,:),'g');
 xlabel('t');
-ylabel('\alpha , \beta');
+ylabel('u_1, u_2');
 hold off;
-title('k¹t po³o¿enia stolika  wczasie');
-legend('nachylenie dla x','nachylenie dla y');
-subplot(2,2,4);
-plot(tout,y);
-title('polozenie w osi y');
+% title('k¹t po³o¿enia stolika  wczasie');
+%legend('u_1','u_2');
+subplot(2,3,3);
+hold on;
+
+plot(t,x(:,1),'r');
+plot(t,x(:,5),'g');
 xlabel('t');
-ylabel('y');
-%x1-x - polozenie kulki
-%x2-x' predkosc kulki
-%x3-alpha nachylenie stolika
-%x4 - y 
-%x5 - y'
-%x6 - beta
+ylabel('x_1, x_5');
+hold off;
+%title('k¹t po³o¿enia stolika  wczasie');
+%legend('u_1','u_2');
+subplot(2,3,4);
+hold on;
+plot(t,x(:,2),'r');
+plot(t,x(:,6),'g');
+xlabel('t');
+ylabel('x_4, x_6');
+hold off;
+% title('k¹t po³o¿enia stolika  wczasie');
+%legend('u_1','u_2');
+subplot(2,3,5);
+hold on;
 
+plot(t,x(:,3),'r');
+plot(t,x(:,7),'g');
+xlabel('t');
+ylabel('x_3, x_7');
+hold off;
+%title('k¹t po³o¿enia stolika  wczasie');
+%legend('u_1','u_2');
+subplot(2,3,6);
+hold on;
+plot(t,x(:,4),'r');
+plot(t,x(:,8),'g');
+xlabel('t');
+ylabel('x_4, x_8');
+hold off;
+% title('k¹t po³o¿enia stolika  wczasie');
+%legend('u_1','u_2');
 
-
-%% Prin data
