@@ -7,7 +7,7 @@ format compact; format long e;
 %x0 = [0, 0, 0.00000005,0, 0,0,-0.0000005,0]; % position x, velocity x, position y, velocity y 
 %x0=[0; 0; 3.14151; 0; 0; 0; -3.14159269; 0];
 %x0=[0; 1; 1; 0; 0; -1; -1; 0];
-x0=[0 0 0 0 0 0 0 0];
+x0=[1 1 1 1 1 1 1 1 ];
 % models parameters
 M = 0.040;      % mass of ball, kg
 R = 0.0015;     % Radius of ball, m
@@ -18,7 +18,7 @@ a1=0.00001;
 a2=0.00001;
 freq2=2;
 freq1=freq2;
-phi1=1*pi/2;
+phi1=2*pi/2;
 phi2=1*pi/2;
 
 % a1=0;
@@ -32,7 +32,7 @@ T=10;
 % control function - angular position of table
 step = 50;  % number of przedzia³y strukturalne -> znaleœæ t³umaczenie
 tau = linspace(0, T, step+1);
-u = [a1*sin(freq1*tau+phi1); a2*sin(freq2*tau+phi2)];
+%u = [a1*sin(freq1*tau+phi1); a2*sin(freq2*tau+phi2)];
 %
 %u=[linspace(0,T,step+1);linspace(0,T,step+1)];
 % % step in rk4, ~0.01
@@ -43,24 +43,24 @@ cn = cumsum([1,n]);  % cn(1)=1 - numer wez³a rk w którym wypada pierwszy weze³ s
 
 x = zeros(cn(end), 8);  % memory for solution
 t = zeros(cn(end), 1);  % vector of time       
-u_out = zeros(cn(end), 2);  % vector of control
+u = zeros(2,length(tau));  % vector of control
 %% Solving
 % sim('model.mdl',10);
 
 
 %[t x]=ode45(@(t, x) rhs(t, x, u, M, R, I, g),tau,x0);
 
-[t,x] = solver(n,dtau, cn, x, t, u, M, R, I, g);
+[t,x] = solver(n,dtau, cn, x, t, u, M, R, I, g,x0);
 
 
 
 %% Print data% subplot(2,2,1);
-subplot(231)
+subplot(321)
 plot(x(:,1),x(:,5));
 xlabel('x');
 ylabel('y');
 title('polozenie kulki');
-subplot(2,3,2);
+subplot(322);
 hold on;
 
 plot(tau, u(1,:),'r');
@@ -70,7 +70,7 @@ ylabel('u_1, u_2');
 hold off;
 % title('k¹t po³o¿enia stolika  wczasie');
 %legend('u_1','u_2');
-subplot(2,3,3);
+subplot(323);
 hold on;
 
 plot(t,x(:,1),'r');
@@ -80,16 +80,16 @@ ylabel('x_1, x_5');
 hold off;
 %title('k¹t po³o¿enia stolika  wczasie');
 %legend('u_1','u_2');
-subplot(2,3,4);
+subplot(324);
 hold on;
 plot(t,x(:,2),'r');
 plot(t,x(:,6),'g');
 xlabel('t');
-ylabel('x_4, x_6');
+ylabel('x_2, x_6');
 hold off;
 % title('k¹t po³o¿enia stolika  wczasie');
 %legend('u_1','u_2');
-subplot(2,3,5);
+subplot(325);
 hold on;
 
 plot(t,x(:,3),'r');
@@ -99,7 +99,7 @@ ylabel('x_3, x_7');
 hold off;
 %title('k¹t po³o¿enia stolika  wczasie');
 %legend('u_1','u_2');
-subplot(2,3,6);
+subplot(326);
 hold on;
 plot(t,x(:,4),'r');
 plot(t,x(:,8),'g');

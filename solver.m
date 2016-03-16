@@ -1,5 +1,5 @@
-function [t,x] = solver(n,dtau, cn, x, t, u, M, R, I, g)
-
+function [t,x] = solver(n,dtau, cn, x, t, u, M, R, I, g, x0)
+x(1,:) = x0;
 for j = 1:length(n)
    % RK4 steps
    h = dtau(j)/n(j); 
