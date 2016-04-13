@@ -1,5 +1,5 @@
 function [t,x] = solver(n,dtau, cn, x, t, u, M, R, I, g, x0)
-x(1,:) = x0;
+x(1,:) = x0; % initial condition
 for j = 1:length(n)
    % RK4 steps
    h = dtau(j)/n(j); 
@@ -15,11 +15,11 @@ for j = 1:length(n)
     x2 = x(i,:)+h2*dx2;
     
     dx3 = rhs(t(i), x2,u(:,j),M, R, I, g);
-    x3 = x(i,:)+h*dx3;  % krok o pe³nej d³ugosci
+    x3 = x(i,:)+h*dx3;  % full length step
    
-    dx4 = rhs(t(i), x3, u(:,j),M, R, I, g); % granica lewostronna!!! sterowania
+    dx4 = rhs(t(i), x3, u(:,j),M, R, I, g); % left-sided limit
     
-    x(i+1,:) = x(i,:)+h3*(dx2+dx3)+h6*(dx1+dx4);
-    t(i+1) = t(i)+h;
+    x(i+1,:) = x(i,:)+h3*(dx2+dx3)+h6*(dx1+dx4); % output calculation
+    t(i+1) = t(i)+h; % increasing time
    end
 end
