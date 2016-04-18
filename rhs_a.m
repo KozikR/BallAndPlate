@@ -1,4 +1,4 @@
-function [dpsi] = rhs(t,x, psi, M, R, I, g, l,alpha_max)
+function [dpsi] = rhs_a(t,x, psi, M, R, I, g, l, a_max)
 dpsi = [0 0 0 0 0 0 0 0];
 B=M/(M+I/(R^2));
 

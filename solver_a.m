@@ -5,7 +5,7 @@
 % cn=cumsum([1;n]);
 % x
 
-function [t,psi] = solver_a(n,dtau, cn, x, t, u, M, R, I, g, xf)
+function [t,psi] = solver_a(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf)
 psi=zeros(cn(end),n); %number of columns equal to 9
 %psi(end,:)=x(end,:); %final value of adjoint equation
 psi(end,:)=x(end,:)-xf;
@@ -20,7 +20,7 @@ for j=length(dtau):-1:1,
     for i=cn(j+1):-1:xn(j)+1,
     	z=[x(i,:) psi(i,:)]; %x(i,:) - i-value of state vector      
         %RK steps direviae value derivate etc
-		k1=rhs_a(z,u(j),t,x, psi, M, R, I, g, l,alpha_max) %a from adjoint rightside of state space and left side of 
+		k1=rhs_a(z,u(j),t,x, psi, M, R, I, g, l,a_max) %a from adjoint rightside of state space and left side of 
     	z1=z-2*k1;
         k2=rhs_a(z1,u(j),...);
         z2=z-h2*k2;

@@ -15,6 +15,9 @@ R = 0.0015;     % Radius of ball, m
 I = 2/5*M*R^2;  % Moment of inertia of ball
 g = 9.81;       % gravitational acceleration
 
+l = 0.2;        % length of table, m
+a_max = 30*pi/180; % max angle of table, radians
+
 a1=1;
 a2=1;
 off1=0;
@@ -52,10 +55,10 @@ t = zeros(cn(end), 1);  % vector of time
 
 %[t x]=ode45(@(t, x) rhs(t, x, u, M, R, I, g),tau,x0);
 
-[t,x] = solver(n,dtau, cn, x, t, u, M, R, I, g,x0);
+[t,x] = solver(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, x0);
 
 xf=[0 0 0 0 0 0 0 0 0];
-[t,psi] = solver_a(n,dtau, cn, x, t, u, M, R, I, g,xf);
+[t,psi] = solver_a(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf);
 
 % test_psi(..) 
 disp([dQ_0-psi(1,:)']);
