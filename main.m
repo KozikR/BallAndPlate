@@ -83,7 +83,6 @@ for i = 1:9
     xlabel('\epsilon');
     ylabel('\frac{\partial Q}{\epsilon}');
     title(['x_', num2str(i)]);
-    title
 end
 
 %% Ploting data
