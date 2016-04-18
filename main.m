@@ -61,6 +61,10 @@ t = zeros(cn(end), 1);  % vector of time
 xf=[0 0 0 0 0 0 0 0 0];
 [t,psi] = solver_a(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf);
 
+figure;
+plot(t,psi)
+xlabel('t');
+ylabel('\psi')
 % test_psi(..) 
 %disp([dQ_0-psi(1,:)']);
 %check number not value difference because of errors and small final values
