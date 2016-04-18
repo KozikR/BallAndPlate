@@ -8,6 +8,7 @@ format compact; format long e;
 %x0=[0; 0; 3.14151; 0; 0; 0; -3.14159269; 0];
 %x0=[0; 1; 1; 0; 0; -1; -1; 0];
 x0=[0 1 0 0.5 0 0 -0.25 0 0]; %test 1
+xf=[0 0 0 0 0 0 0 0 0];
 %x0=[0 0 1 0 0 1 0 0]; %test 2
 % models parameters
 M = 0.040;      % mass of ball, kg
@@ -56,35 +57,36 @@ t = zeros(cn(end), 1);  % vector of time
 %[t x]=ode45(@(t, x) rhs(t, x, u, M, R, I, g),tau,x0);
 
 [t,x] = solver(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, x0);
-
+%%
 xf=[0 0 0 0 0 0 0 0 0];
-%[t,psi] = solver_a(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf);
+[t,psi] = solver_a(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf);
 
 % test_psi(..) 
-disp([dQ_0-psi(1,:)']);
+%disp([dQ_0-psi(1,:)']);
 %check number not value difference because of errors and small final values
 
 %% Q - cost calculation
 k=1;
 % find ep
-ep_number = 200;
+ep_number = 100;
 gQ = zeros(9, ep_number);
 ep = zeros(1, ep_number);
 
 for i = 1:ep_number 
-    ep(i) = i*50e-12;
+    ep(i) = i*eps;%50e-12;
     gQ(:,i) = gradientCost(n, dtau, cn, u, M, R, I, g, l, a_max, k, x0, ep(i));
 end
 
 figure;
 for i = 1:9
     subplot(5,2,i);
-    plot(ep, gQ(i,:));
+    plot(ep, gQ(i,:)); %plot(1:ep_number, gQ(i,:)); 
     xlabel('\epsilon');
     ylabel('\frac{\partial Q}{\epsilon}');
     title(['x_', num2str(i)]);
 end
 
+%according to plot ep should be equal to about 40*eps=8.881784197001252e-15
 %% Ploting data
 subplot(321)
 plot(x(:,1),x(:,5),'Linewidth',2);
