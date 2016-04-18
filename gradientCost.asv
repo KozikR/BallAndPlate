@@ -1,0 +1,1 @@
+function gQ = gradientCost(n, dtau, cn, u, M, R, I, g, l, a_max, k, x0, eps)

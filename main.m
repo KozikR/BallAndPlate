@@ -58,11 +58,33 @@ t = zeros(cn(end), 1);  % vector of time
 [t,x] = solver(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, x0);
 
 xf=[0 0 0 0 0 0 0 0 0];
-[t,psi] = solver_a(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf);
+%[t,psi] = solver_a(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf);
 
 % test_psi(..) 
 disp([dQ_0-psi(1,:)']);
 %check number not value difference because of errors and small final values
+
+%% Q - cost calculation
+k=1;
+% find ep
+ep_number = 200;
+gQ = zeros(9, ep_number);
+ep = zeros(1, ep_number);
+
+for i = 1:ep_number 
+    ep(i) = i*50e-12;
+    gQ(:,i) = gradientCost(n, dtau, cn, u, M, R, I, g, l, a_max, k, x0, ep(i));
+end
+
+figure;
+for i = 1:9
+    subplot(5,2,i);
+    plot(ep, gQ(i,:));
+    xlabel('\epsilon');
+    ylabel('\frac{\partial Q}{\epsilon}');
+    title(['x_', num2str(i)]);
+    title
+end
 
 %% Ploting data
 subplot(321)
