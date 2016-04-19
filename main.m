@@ -19,6 +19,9 @@ g = 9.81;       % gravitational acceleration
 l = 0.2;        % length of table, m
 a_max = 30*pi/180; % max angle of table, radians
 
+k=1;
+
+% parameters of sinus 
 a1=1;
 a2=1;
 off1=0;
@@ -59,7 +62,7 @@ t = zeros(cn(end), 1);  % vector of time
 [t,x] = solver(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, x0);
 %%
 xf=[0 0 0 0 0 0 0 0 0];
-[t,psi] = solver_a(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf);
+[t,psi] = solver_a(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf, k);
 
 figure;
 plot(t,psi)
@@ -70,7 +73,7 @@ ylabel('\psi')
 %check number not value difference because of errors and small final values
 
 %% Q - cost calculation
-k=1;
+
 % find ep
 ep_number = 100;
 gQ = zeros(9, ep_number);
@@ -90,9 +93,9 @@ for i = 1:9
     title(['x_', num2str(i)]);
 end
 
-%according to plot ep should be equal to about 40*eps=8.881784197001252e-15
-q_o= gradientCost(n, dtau, cn, u, M, R, I, g, l, a_max, k, x0, 40*eps);
-[psi(1,:); q_o(1:8)']
+%% according to plot ep should be equal to about 40*eps=8.881784197001252e-15
+q_o= gradientCost(n, dtau, cn, u, M, R, I, g, l, a_max, k, x0, 1e-5);
+[-psi(1,:); q_o(1:8)']
 
  
 %% Ploting data
