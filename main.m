@@ -67,7 +67,8 @@ xf=[0 0 0 0 0 0 0 0 0];
 figure;
 plot(t,psi)
 xlabel('t');
-ylabel('\psi')
+ylabel('\psi');
+legend('\psi_1','\psi_2','\psi_3','\psi_4','\psi_5','\psi_6','\psi_7','\psi_8');
 % test_psi(..) 
 %disp([dQ_0-psi(1,:)']);
 %check number not value difference because of errors and small final values
