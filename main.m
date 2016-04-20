@@ -94,7 +94,7 @@ for i = 1:9
 end
 
 %% according to plot ep should be equal to about 40*eps=8.881784197001252e-15
-q_o= gradientCost(n, dtau, cn, u, M, R, I, g, l, a_max, k, x0, 1e-5);
+q_o= gradientCost(n, dtau, cn, u, M, R, I, g, l, a_max, k, x0, 1e-8);
 [-psi(1,:); q_o(1:8)']
 
  

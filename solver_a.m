@@ -9,7 +9,7 @@ function [t,psi] = solver_a(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf, k)
 
 psi=zeros(cn(end),8); %number of columns equal to 9
 %psi(end,:)=x(end,:); %final value of adjoint equation
-psi(end,:)=x(end,1:8)-xf(1:8);
+psi(end,:)=-x(end,1:8)+xf(1:8);
 
 for j=length(dtau):-1:1,
 	h=dtau(j)/n(j);
