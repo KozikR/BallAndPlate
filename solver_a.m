@@ -21,7 +21,7 @@ for j=length(dtau):-1:1,
     	z=[x(i,:) psi(i,:)]; %x(i,:) - i-value of state vector      
         %RK steps direviae value derivate etc
 		k1=rhs_a(z,u(:,j),t, M, R, I, g, l, a_max,k); %a from adjoint rightside of state space and left side of 
-    	z1=z-2*k1;
+    	z1=z-h2*k1;
         k2=rhs_a(z1,u(:,j),t, M, R, I, g, l, a_max,k);
         z2=z-h2*k2;
         k3=rhs_a(z2,u(:,j),t, M, R, I, g, l, a_max,k);
