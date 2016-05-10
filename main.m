@@ -2,6 +2,7 @@
 clear all; close all;
 format compact; format long e;
 
+
 %% Data - initial state, parameters, time, control function
 %T = 10;  % time of simulation
 %x0 = [0, 0, 0.00000005,0, 0,0,-0.0000005,0]; % position x, velocity x, position y, velocity y 
@@ -62,6 +63,7 @@ t = zeros(cn(end), 1);  % vector of time
 [t,x] = solver(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, x0);
 %%
 xf=[0 0 0 0 0 0 0 0 0];
+
 [t,psi] = solver_a(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf, k);
 
 figure;
@@ -80,7 +82,7 @@ gQ = zeros(9, ep_number);
 ep = zeros(1, ep_number);
 
 for i = 1:ep_number 
-    ep(i) = i*eps;%50e-12;
+    ep(i) = i*1e-6;
     gQ(:,i) = gradientCost(n, dtau, cn, u, M, R, I, g, l, a_max, k, x0, ep(i));
 end
 
