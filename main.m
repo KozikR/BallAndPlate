@@ -69,7 +69,8 @@ xf=[0 0 0 0 0 0 0 0 0];
 figure;
 plot(t,psi)
 xlabel('t');
-ylabel('\psi')
+ylabel('\psi');
+legend('\psi_1','\psi_2','\psi_3','\psi_4','\psi_5','\psi_6','\psi_7','\psi_8');
 % test_psi(..) 
 %disp([dQ_0-psi(1,:)']);
 %check number not value difference because of errors and small final values
@@ -77,23 +78,43 @@ ylabel('\psi')
 %% Q - cost calculation
 
 % find ep
-ep_number = 100;
+ep_number = 200;
 gQ = zeros(9, ep_number);
 ep = zeros(1, ep_number);
+log_ep=logspace(-18, -5, ep_number);
 
 for i = 1:ep_number 
-    ep(i) = i*1e-6;
+    ep(i) = log_ep(i);%50e-12;
     gQ(:,i) = gradientCost(n, dtau, cn, u, M, R, I, g, l, a_max, k, x0, ep(i));
 end
-
+%%
 figure;
 for i = 1:9
     subplot(5,2,i);
     plot(ep, gQ(i,:)); %plot(1:ep_number, gQ(i,:)); 
     xlabel('\epsilon');
-    ylabel('\frac{\partial Q}{\epsilon}');
+    ylabel('$\frac{\partial Q}{\epsilon}$');
     title(['x_', num2str(i)]);
 end
+%%
+figure
+semilogx(ep, gQ);
+xlabel('\epsilon');
+ylabel('\partial Q / \partialx');
+legend('x_1','x_2','x_3','x_4','x_5','x_6','x_7','x_8');
+%%
+figure
+
+for i = 1:8
+    subplot(4,2,i);
+    semilogx(ep(100:end), gQ(i,100:end)); 
+    xlabel('\epsilon');
+    
+ylabel('\partial Q / \partialx');
+    title(['x_', num2str(i)]);
+    xlim([ep(100) ep(end) ]);
+end
+
 
 %% according to plot ep should be equal to about 40*eps=8.881784197001252e-15
 q_o= gradientCost(n, dtau, cn, u, M, R, I, g, l, a_max, k, x0, 1e-8);
