@@ -19,6 +19,7 @@ g = 9.81;       % gravitational acceleration
 
 l = 0.2;        % length of table, m
 a_max = 30*pi/180; % max angle of table, radians
+u_max = 0.1;
 
 k=1;
 
@@ -61,6 +62,15 @@ t = zeros(cn(end), 1);  % vector of time
 %[t x]=ode45(@(t, x) rhs(t, x, u, M, R, I, g),tau,x0);
 
 [t,x] = solver(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, x0);
+%% Solver bang-bang
+
+u0 = [u_max, u_max]';
+tau1 = [0, 1, 2, 3, 4, 5, 6, 7, T];
+tau2 = [0, 2, 6, T];
+
+[t,x] = solver_BB(h0, tau1, tau2, u0, M, R, I, g, l, a_max, x0);
+
+
 %%
 xf=[0 0 0 0 0 0 0 0 0];
 

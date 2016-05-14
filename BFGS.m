@@ -15,7 +15,7 @@ while 1
     gradQ = gradientQ(x);
 
     if gradQ'*gradQ <= ep1 
-        return;
+        break;
     end
 
     if R == 1
@@ -52,10 +52,16 @@ while 1
     
     if abs(x-x_s) < ep2
        if R == 0
-           return;
+           break;
        else
            R = 0;
        end
-    end    
+    end   
     
+    % change number of swiches
+    % if change R=1 and continue
+    % 
+    
+    
+    R = 0;
 end
