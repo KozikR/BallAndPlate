@@ -4,13 +4,17 @@ format compact; format long e;
 
 
 %% Data - initial state, parameters, time, control function
-%T = 10;  % time of simulation
-%x0 = [0, 0, 0.00000005,0, 0,0,-0.0000005,0]; % position x, velocity x, position y, velocity y 
-%x0=[0; 0; 3.14151; 0; 0; 0; -3.14159269; 0];
-%x0=[0; 1; 1; 0; 0; -1; -1; 0];
-x0=[0 1 0 0.5 0 0 -0.25 0 0]; %test 1
-xf=[0 0 0 0 0 0 0 0 0];
-%x0=[0 0 1 0 0 1 0 0]; %test 2
+% Solver parameters
+T = 10;  % time of simulation
+steps = 1000;  % number of structures intervals
+tau = linspace(0, T, steps+1);
+dtau = diff(tau); % difference vector - intervals width
+h0 = 0.01; % simulation step
+n = ceil(dtau/h0); % steps in interval
+cn = cumsum([1,n]);  % cn(1)=1 - number of RK node wich is structural node cn(2)=1+n(1) - number of secound structural node, ...
+x = zeros(cn(end), 9);  % memory for solution
+t = zeros(cn(end), 1);  % vector of time   
+
 % models parameters
 M = 0.040;      % mass of ball, kg
 R = 0.0015;     % Radius of ball, m
@@ -22,6 +26,12 @@ a_max = 30*pi/180; % max angle of table, radians
 u_max = 0.1;
 
 k=1;
+%x0 = [0, 0, 0.00000005,0, 0,0,-0.0000005,0]; % position x, velocity x, position y, velocity y 
+%x0=[0; 0; 3.14151; 0; 0; 0; -3.14159269; 0];
+%x0=[0; 1; 1; 0; 0; -1; -1; 0];
+x0=[0 1 0 0.5 0 0 -0.25 0 0]; %test 1
+xf=[0 0 0 0 0 0 0 0 0];
+%x0=[0 0 1 0 0 1 0 0]; %test 2
 
 % parameters of sinus 
 a1=1;
@@ -39,64 +49,26 @@ phi2=1*pi/2;
 % phi1=1*pi/2;
 % phi2=2*pi/2;
 
-T=10;
-% control function - angular position of table
-steps = 1000;  % number of przedzia³y strukturalne -> znaleœæ t³umaczenie
-tau = linspace(0, T, steps+1);
 u = [a1*sin(freq1*tau+phi1)+off1; a2*sin(freq2*tau+phi2)];
 %
 %u=[linspace(0,T,step+1);linspace(0,T,step+1)];
 % % step in rk4, ~0.01
-dtau = diff(tau); %wektor roznic - szerokosci przedzialow
-h0 = 0.01; %krok symulacji
-n = ceil(dtau/h0); % liczba krokow symulacji w przedziale
-cn = cumsum([1,n]);  % cn(1)=1 - numer wez³a rk w którym wypada pierwszy weze³ strukturalny; cn(2)=1+n(1) - numer wez³a rk w którym wypada 2 wze³ strukturalny, ....
-
-x = zeros(cn(end), 9);  % memory for solution
-t = zeros(cn(end), 1);  % vector of time       
-%u = zeros(2,length(tau));  % vector of control
 %% Solving
-% sim('model.mdl',10);
-
-
-%[t x]=ode45(@(t, x) rhs(t, x, u, M, R, I, g),tau,x0);
-
 [t,x] = solver(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, x0);
-%% Solver bang-bang
-u0 = [u_max, u_max]';
-tau1 = [0, 1, 2, 3, 4, 5, 6, 7, T];
-tau2 = [0, 2, 6, T];
-
-[t, x, u_out, n, dtau, cn] = solver_BB(h0, tau1, tau2, u0, M, R, I, g, l, a_max, x0);
-[t,psi] = solver_a_BB(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf, k);
-
-%%
-xf=[0 0 0 0 0 0 0 0 0];
-
 [t,psi] = solver_a(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf, k);
 
-figure;
-plot(t,psi)
-xlabel('t');
-ylabel('\psi');
-legend('\psi_1','\psi_2','\psi_3','\psi_4','\psi_5','\psi_6','\psi_7','\psi_8');
-% test_psi(..) 
-%disp([dQ_0-psi(1,:)']);
-%check number not value difference because of errors and small final values
-
 %% Q - cost calculation
-
 % find ep
 ep_number = 200;
 gQ = zeros(9, ep_number);
 ep = zeros(1, ep_number);
 log_ep=logspace(-18, -5, ep_number);
-
 for i = 1:ep_number 
     ep(i) = log_ep(i);%50e-12;
     gQ(:,i) = gradientCost(n, dtau, cn, u, M, R, I, g, l, a_max, k, x0, ep(i));
 end
-%%
+
+%% plot gradQ in function of ep
 figure;
 for i = 1:9
     subplot(5,2,i);
@@ -105,7 +77,8 @@ for i = 1:9
     ylabel('$\frac{\partial Q}{\epsilon}$');
     title(['x_', num2str(i)]);
 end
-%%
+
+%% plot gradQ in function of ep, log axis
 figure
 semilogx(ep, gQ);
 xlabel('\epsilon');
@@ -125,7 +98,8 @@ ylabel('\partial Q / \partialx');
 end
 
 
-%% according to plot ep should be equal to about 40*eps=8.881784197001252e-15
+%% Test
+%according to plot ep should be equal to about 40*eps=8.881784197001252e-15
 q_o= gradientCost(n, dtau, cn, u, M, R, I, g, l, a_max, k, x0, 1e-8);
 [-psi(1,:); q_o(1:8)']
 
@@ -186,3 +160,9 @@ hold off;
 axis([0 T -1 1]);
 title('Prêdkoœæ k¹towa stolika w osi x i y');
 
+% plot a
+figure;
+plot(t,psi)
+xlabel('t');
+ylabel('\psi');
+legend('\psi_1','\psi_2','\psi_3','\psi_4','\psi_5','\psi_6','\psi_7','\psi_8');
