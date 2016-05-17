@@ -63,13 +63,12 @@ t = zeros(cn(end), 1);  % vector of time
 
 [t,x] = solver(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, x0);
 %% Solver bang-bang
-
 u0 = [u_max, u_max]';
 tau1 = [0, 1, 2, 3, 4, 5, 6, 7, T];
 tau2 = [0, 2, 6, T];
 
-[t,x] = solver_BB(h0, tau1, tau2, u0, M, R, I, g, l, a_max, x0);
-
+[t, x, u_out, n, dtau, cn] = solver_BB(h0, tau1, tau2, u0, M, R, I, g, l, a_max, x0);
+[t,psi] = solver_a_BB(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf, k);
 
 %%
 xf=[0 0 0 0 0 0 0 0 0];
