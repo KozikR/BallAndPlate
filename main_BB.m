@@ -25,11 +25,11 @@ tau1 = [0, 1, 2, 3, 4, 5, 6, 7, T];
 tau2 = [0, 2, 6, T];
 
 %% Solver bang-bang
-[t, x, u_out, n, dtau, cn] = solver_BB(h0, tau1, tau2, u0, M, R, I, g, l, a_max, x0);
+[t, x, u_out, n, dtau, cn] = solver_BB(h0, tau1, tau2, u0, M, R, I, g, l, a_max, x0, k);
 [t,psi] = solver_a_BB(n,dtau, cn, x, t, u_out, M, R, I, g, l, a_max, xf, k);
 
 %% Test
-q_o= gradientCost(n, dtau, cn, u_out, M, R, I, g, l, a_max, k, x0, 3e-7);
+q_o= gradientCost_BB(h0, tau1, tau2, u0, M, R, I, g, l, a_max, x0, 3e-7, k);
 [-psi(1,:); q_o(1:8)']
 
 %% Plot

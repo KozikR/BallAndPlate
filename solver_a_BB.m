@@ -1,10 +1,3 @@
-% h0=0.01;
-% tau=[0; ... ; T];
-% dtau=diff(tau);
-% n=ceil(dtau/h0);
-% cn=cumsum([1;n]);
-% x
-
 function [t,psi] = solver_a_BB(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf, k)
 
 psi=zeros(cn(end),8); %number of columns equal to 9
@@ -30,5 +23,3 @@ for j=length(dtau):-1:1,
         psi(i-1,:)=z(10:end);
     end
 end
-%plot(t,psi);
-

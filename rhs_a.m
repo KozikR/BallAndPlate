@@ -1,4 +1,4 @@
-function [dz] = rhs_a(z,u,t, M, R, I, g, l, a_max,k)
+function [dz] = rhs_a(z,u,t, M, R, I, g, l, a_max, k)
 dz = zeros(17,1)';
 B=M/(M+I/(R^2));
 
