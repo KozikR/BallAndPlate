@@ -1,4 +1,4 @@
-function x = BFGS(x0, )
+function p = BFGS(p0, h0, u0, M, R, I, g, l, a_max, x0)
 
 %STEP 1 - initial conditions
 ep1 = 1e-10;
@@ -7,24 +7,24 @@ ep2 = 1e-10;
 % x - [n, t1, t2, ..., tn]
 % How chnage length of x beetween iterations
 
-x = x0;
-Qx = Q(x);
+p = p0;
+Qx = q_cost_BB(h0, tau1, tau2, u0, M, R, I, g, l, a_max, x0);
 R = 1;
-x_s = x0;
-gradQ_s = x0;
+p_s = p0;
+gradQ_s = p0;
 
 while 1
     %STEP 2 - first STOP condition
-    gradQ = gradientQ(x);
+    gradQ = gradient(p, h0, u0, M, R, I, g, l, a_max, x0);
     if gradQ'*gradQ <= ep1 
         break;
     end
 
     %STEP 3 - setting direction as vector d
     if R == 1
-       W = eye(length(x)); 
+       W = eye(length(p)); 
     else
-       s  = x -  x_s;
+       s  = p -  p_s;
        r = gradQ - gradQ_s;
        W = W+(r*r')/(s'*r)-(W*(s*s')*W)/(s'*W*s);
     end
@@ -38,26 +38,26 @@ while 1
     end
     
     %STEP 5 - saving old previous values
-    x_s = x;
+    p_s = p;
     gradQ_s = gradQ;
     
     %STEP - searching for x od d direction
     % contraction
     max_contraction = 100;
     lambda = 1;
-    Qn = Q(x+lambda*d);
+    Qn = Q(p+lambda*d);
     
     while max_contraction > 0 && Qn > Qx
        max_contraction = max_contraction-1;
        lambda = lambda / 2;
-       Qn = Q(x+lambda*d);
+       Qn = Q(p+lambda*d);
     end
     
-    x = x+lambda*d;
+    p = p+lambda*d;
     Qx = Qn;
     
     % STEP 7 - checking STOP conditions
-    if abs(x-x_s) < ep2 % if there was no improvement
+    if abs(p-p_s) < ep2 % if there was no improvement
        if R == 1 % if it was first iteration after refreshment 
            break;
        else
