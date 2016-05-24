@@ -1,4 +1,4 @@
-function [tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, M, R, I, g, l, a_max, x0, k)
+function [tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, M, R, I, g, l, a_max, x0, k, xf)
 
 %STEP 1 - initial conditions
 ep1 = 1e-10;
@@ -16,11 +16,11 @@ tau2_s = tau2;
 Qx = q_cost_BB(h0, tau1, tau2, u0, M, R, I, g, l, a_max, x0, k);
 R = 1;
 
-gradQ_s = p0;
+gradQ_s = [tau1, tau2];
 
 while 1
     %STEP 2 - first STOP condition
-    [gradQ, x, psi, t, Q] = gradient(tau1, tau2, h0, u0, M, R, I, g, l, a_max, x0, k);
+    [gradQ, x, psi, t, Q] = gradient(tau1, tau2, h0, u0, M, R, I, g, l, a_max, x0, xf, k);
     if gradQ'*gradQ <= ep1 
         break;
     end
@@ -59,7 +59,7 @@ while 1
        max_contraction = max_contraction-1;
        lambda = lambda / 2;
        tau1_ = tau1+lambda*d(1:length(tau1));
-       tau2_ = tau2+lambda*d(1:length(tau2));
+       tau2_ = tau2+lambda*d((length(tau1)+1):length(tau2));
        Qn = q_cost_BB(h0, tau1_, tau2_, u0, M, R, I, g, l, a_max, x0, k);
     end
     
