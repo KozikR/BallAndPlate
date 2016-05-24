@@ -5,10 +5,12 @@ function [dQ, x, psi, t, Q] = gradient(tau1, tau2, h0, u0, M, R, I, g, l, a_max,
 
 dQ = zeros(1, length(tau1)+length(tau2));
 for i = 1:length(tau1)
-    dQ(i) = psi(t == tau1(i), 4);
+    [c index] = min(abs(t-tau1(i)));
+    dQ(i) = psi(index, 4);
 end
 for i = 1:length(tau2)
-    dQ(length(tau1) + i) = psi(t == tau2(i), 8);
+    [c index] = min(abs(t-tau2(i)));
+    dQ(length(tau1) + i) = psi(index, 8);
 end
 
-Q = (k*x(9)+(x(1:8)-xf)*(x(1:8)-xf)')/2;
+Q = (k*x(9)+(x(1:8)-xf(1:8))*(x(1:8)-xf(1:8))')/2;

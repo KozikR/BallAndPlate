@@ -33,9 +33,8 @@ while 1
        r = gradQ - gradQ_s;
        W = W+(r*r')/(s'*r)-(W*(s*s')*W)/(s'*W*s);
     end
-
-    d = -gradQ\W; % should be left side division
-    
+    d = -W^(-1)*gradQ'; % should be left side division
+    d=d';
     %STEP 4 - check if direction is worth searching on 
     if d'*gradQ >= 0
        R = 1;
