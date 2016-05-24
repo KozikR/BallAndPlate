@@ -22,6 +22,8 @@ for j = 1:length(dtau)
      
    u_out(:, j) = u;
    
+   t(cn(j)) = tau(j);
+   
    for i = cn(j):(cn(j+1)-1)
     dx1 = rhs(t(i),x(i,:),u,M, R, I, g, l, a_max);
     x1 = x(i,:)+h2*dx1;
@@ -37,7 +39,9 @@ for j = 1:length(dtau)
     x(i+1,:) = x(i,:)+h3*(dx2+dx3)+h6*(dx1+dx4); % output calculation
     t(i+1) = t(i)+h; % increasing time
    end
-
+   
+   
+   
    if ismember(tau(j), tau1)
        u(1) = -u(1);
    end
