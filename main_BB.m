@@ -41,7 +41,7 @@ q_o= gradientCost_BB(h0, tau1, tau2, u0, M, Rad, I, g, l, a_max, x0, 3e-7, k, T)
 disp('BFGS');
 tau1_0 = tau1;
 tau2_0 = tau2;
-[tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, M, Rad, I, g, l, a_max, x0, k, xf);
+[tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, M, Rad, I, g, l, a_max, x0, k, xf, T);
 
 
 %% Plot
