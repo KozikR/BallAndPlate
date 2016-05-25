@@ -4,9 +4,10 @@ format compact; format long e;
 
 %% Data - initial state, parameters, time, control function
 % models parameters
+disp('init');
 M = 0.040;      % mass of ball, kg
-R = 0.0015;     % Radius of ball, m
-I = 2/5*M*R^2;  % Moment of inertia of ball
+Rad = 0.0015;     % Radius of ball, m
+I = 2/5*M*Rad^2;  % Moment of inertia of ball
 g = 9.81;       % gravitational acceleration
 
 l = 0.2;        % length of table, m
@@ -21,21 +22,26 @@ x0=[0 1 0 0.5 0 0 -0.25 0 0]; %test 1
 xf=[0 0 0 0 0 0 0 0 0];
 
 u0 = [u_max, u_max]';
-tau1 = [0, 1, 2, 3, 4, 5, 6, 7, T];
-tau2 = [0, 2, 6, T];
-
+% tau1 = [0, 1, 2, 3, 4, 5, 6, 7, T];
+% tau2 = [0, 2, 6, T];
+tau1 = [0, T];
+tau2 = [0, T];
 %% Solver bang-bang
-[t, x, u_out, n, dtau, cn] = solver_BB(h0, tau1, tau2, u0, M, R, I, g, l, a_max, x0);
-[t,psi] = solver_a_BB(n,dtau, cn, x, t, u_out, M, R, I, g, l, a_max, xf, k);
+disp('bb');
+[t, x, u_out, n, dtau, cn] = solver_BB(h0, tau1, tau2, u0, M, Rad, I, g, l, a_max, x0);
+disp('bb_a');
+[t,psi] = solver_a_BB(n,dtau, cn, x, t, u_out, M, Rad, I, g, l, a_max, xf, k);
 
 %% Test
-q_o= gradientCost_BB(h0, tau1, tau2, u0, M, R, I, g, l, a_max, x0, 3e-7, k);
-[-psi(1,:); q_o(1:8)']
+disp('test');
+q_o= gradientCost_BB(h0, tau1, tau2, u0, M, Rad, I, g, l, a_max, x0, 3e-7, k);
+[-psi(1,:); q_o(1:8)'];
 
 %% BFSG
+disp('BFGS');
 tau1_0 = tau1;
 tau2_0 = tau2;
-[tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, M, R, I, g, l, a_max, x0, k, xf);
+[tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, M, Rad, I, g, l, a_max, x0, k, xf);
 
 
 %% Plot
@@ -93,7 +99,7 @@ ylabel('x_4, x_8');
 hold off;
 axis([0 T -1 1]);
 title('Prêdkoœæ k¹towa stolika w osi x i y');
-
+%%
 figure;
 plot(t,psi)
 xlabel('t');

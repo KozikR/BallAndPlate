@@ -10,17 +10,18 @@ u = u0;
 t=0;
 
 for j = 1:length(dtau)
+    
    % RK4 steps
    h = dtau(j)/n(j); 
    h2 = h/2;
    h3 = h/3;
    h6 = h/6;
-   
-   for i = cn(j):(cn(j+1)-1)
+
+%    for i = cn(j):(cn(j+1)-1)
     dx1 = rhs(t,x,u,M, R, I, g, l, a_max);
     x1 = x+h2*dx1;
     
-    dx2 = rhs(t,x1, u,M, R, I, g, l, a_max);
+    dx2 = rhs(t, x1, u, M, R, I, g, l, a_max);
     x2 = x+h2*dx2;
     
     dx3 = rhs(t, x2, u, M, R, I, g, l, a_max);
@@ -29,7 +30,7 @@ for j = 1:length(dtau)
     dx4 = rhs(t, x3, u,M, R, I, g, l, a_max); % left-sided limit
     
     x = x+h3*(dx2+dx3)+h6*(dx1+dx4); % output calculation
-   end
+%    end
 
    if ismember(tau(j), tau1)
        u(1) = -u(1);
