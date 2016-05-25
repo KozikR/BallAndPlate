@@ -34,7 +34,9 @@ disp('step2');
        W = eye(length(tau1)+length(tau2)); 
     else
        s = [tau1, tau2] - [tau1_s, tau2_s];
+       s=s';
        r = gradQ - gradQ_s;
+       r=r';
        W = W+(r*r')/(s'*r)-(W*(s*s')*W)/(s'*W*s);
     end
     d = -W^(-1)*gradQ'; % should be left side division
@@ -56,7 +58,7 @@ disp('step2');
     % contraction
     disp('step6');
     max_contraction = 100;
-    lambda = 1;
+    lambda = 1e-7;
     tau1_ = tau1+lambda*d(1:length(tau1));
     tau2_ = tau2+lambda*d(1:length(tau2));
     Qn = q_cost_BB(h0, tau1_, tau2_, u0, M, Rad, I, g, l, a_max, x0, k);

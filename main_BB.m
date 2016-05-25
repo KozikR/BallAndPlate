@@ -22,20 +22,20 @@ x0=[0 1 0 0.5 0 0 -0.25 0 0]; %test 1
 xf=[0 0 0 0 0 0 0 0 0];
 
 u0 = [u_max, u_max]';
-% tau1 = [0, 1, 2, 3, 4, 5, 6, 7, T];
-% tau2 = [0, 2, 6, T];
-tau1 = [0, T];
-tau2 = [0, T];
+tau1 = [1, 2, 3, 4, 5, 6, 7];
+tau2 = [2, 6];
+% tau1 = [0, T];
+% tau2 = [0, T];
 %% Solver bang-bang
 disp('bb');
-[t, x, u_out, n, dtau, cn] = solver_BB(h0, tau1, tau2, u0, M, Rad, I, g, l, a_max, x0);
+[t, x, u_out, n, dtau, cn] = solver_BB(h0, tau1, tau2, u0, M, Rad, I, g, l, a_max, x0, T);
 disp('bb_a');
-[t,psi] = solver_a_BB(n,dtau, cn, x, t, u_out, M, Rad, I, g, l, a_max, xf, k);
+[t,psi] = solver_a_BB(n,dtau, cn, x, t, u_out, M, Rad, I, g, l, a_max, xf, k, T);
 
 %% Test
 disp('test');
-q_o= gradientCost_BB(h0, tau1, tau2, u0, M, Rad, I, g, l, a_max, x0, 3e-7, k);
-[-psi(1,:); q_o(1:8)'];
+q_o= gradientCost_BB(h0, tau1, tau2, u0, M, Rad, I, g, l, a_max, x0, 3e-7, k, T);
+[-psi(1,:); q_o(1:8)']
 
 %% BFSG
 disp('BFGS');

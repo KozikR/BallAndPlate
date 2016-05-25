@@ -1,4 +1,4 @@
-function [t,psi] = solver_a_BB(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf, k)
+function [t,psi] = solver_a_BB(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf, k, T)
 
 psi=zeros(cn(end),8); %number of columns equal to 9
 psi(end,:)=xf(1:8) - x(end,1:8); %final value of adjoint equation

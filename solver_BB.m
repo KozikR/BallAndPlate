@@ -1,10 +1,12 @@
-function [t, x, u_out, n, dtau, cn] = solver_BB(h0, tau1, tau2, u0, M, R, I, g, l, a_max, x0)
+function [t, x, u_out, n, dtau, cn] = solver_BB(h0, tau1, tau2, u0, M, R, I, g, l, a_max, x0, T)
 
+tau1 = [0 tau1 T];
+tau2 = [0 tau2 T];
 tau = unique([tau1, tau2]);
+
 dtau = diff(tau);
 n = ceil(dtau/h0);
 cn = cumsum([1,n]);
-
 x = zeros(cn(end), 9);  % memory for solution
 t = zeros(cn(end), 1);  % vector of time     
 x(1,:) = x0; % initial condition
