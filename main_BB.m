@@ -24,8 +24,8 @@ xf=[0 0 0 0 0 0 0 0 0];
 u0 = [u_max, u_max]';
 tau1 = [1, 2, 3, 4, 5, 6, 7];
 steps=5;
-tau2 = linspace(0, T, steps);
-tau1 = linspace(0, T, steps);
+tau2 = linspace(0.1, T-0.1, steps);
+tau1 = linspace(0.1, T-0.1, steps);
 % tau1 = [0, T];
 % tau2 = [0, T];
 %% Solver bang-bang

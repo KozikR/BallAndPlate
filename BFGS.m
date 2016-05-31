@@ -59,7 +59,7 @@ disp('step2');
     %STEP - searching for x od d direction
     % contraction
     disp('step6');
-    max_contraction = 1000;
+    max_contraction = 100;
     
     d1=[0, d(1:length(tau1)), 0];
     d2=[0, d(length(tau1)+1:end), 0];
@@ -79,8 +79,8 @@ disp('step2');
         max_contraction = max_contraction-1;
         lambda1 = lambda1 / 2;
         lambda2 = lambda2 / 2;
-        tau1_ = tau1-lambda1*d(1:length(tau1));
-        tau2_ = tau2-lambda2*d((length(tau1)+1):(length(tau1)+length(tau2)));
+        tau1_ = tau1+lambda1*d(1:length(tau1));
+        tau2_ = tau2+lambda2*d((length(tau1)+1):(length(tau1)+length(tau2)));
         Qn = q_cost_BB(h0, tau1_, tau2_, u0, M, Rad, I, g, l, a_max, x0, k, T);
         if(Qn < Qx)
             tau1_opt = tau1_;
@@ -89,8 +89,8 @@ disp('step2');
         end
     end
     
-    tau1 = tau1_opt;
-    tau2 = tau2_opt;
+    tau1 = tau1_;
+    tau2 = tau2_;
     if(Qn>Qx) 
         disp('STOP3 - no impovement');
         break;
