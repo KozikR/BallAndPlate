@@ -70,17 +70,17 @@ disp('step2');
 
     lambda1 =min([abs(dtau1/dd1),1]);
     lambda2 =min([abs(dtau2/dd2), 1]);
-
+    lambda = min(lambda1, lambda2);
 %     lambda = 1;
 %     tau1_ = tau1+lambda*d(1:length(tau1));
 %     tau2_ = tau2+lambda*d(length(tau1)+1:end);
 %     Qn = q_cost_BB(h0, tau1_, tau2_, u0, M, Rad, I, g, l, a_max, x0, k, T);
     while max_contraction > 0,% && Qn > Qx
         max_contraction = max_contraction-1;
-        lambda1 = lambda1 / 2;
-        lambda2 = lambda2 / 2;
-        tau1_ = tau1+lambda1*d(1:length(tau1));
-        tau2_ = tau2+lambda2*d((length(tau1)+1):(length(tau1)+length(tau2)));
+        lambda = lambda / 2;
+        %lambda2 = lambda2 / 2;
+        tau1_ = tau1+lambda*d(1:length(tau1));
+        tau2_ = tau2+lambda*d((length(tau1)+1):(length(tau1)+length(tau2)));
         Qn = q_cost_BB(h0, tau1_, tau2_, u0, M, Rad, I, g, l, a_max, x0, k, T);
         if(Qn < Qx)
             tau1_opt = tau1_;
