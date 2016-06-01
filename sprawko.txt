@@ -1,0 +1,78 @@
+1)strona tytu³owa: rok, kierunek, przedmiot, autorzy
+
+2) wstep
+zagadnienie, cel pracy
+ krtókie streszczenie co zriobiono w pracy
+ omówienie literatury (krótko)
+ 
+ 3) szczególowo omówienie moelu, równaiia stanu, inne liczone rówania, kmentarz opis
+ podzia³ zmiennych (stanu, sterujace), ograniczenia co wystepuja
+ wartoœci parametrów.
+ Opis algorytmu s³uzacego do symulacji (rk4). Opisaæ ten algorytm. 
+ Uwzglêdnic zale¿nosc od sterowania i opisaæ przyjeta aproksymacje sterowania
+ (przedzia³¹mi sta³e - co sie odbija na RK
+    a)nieciag³osci sterowania wystepuja w wêz³y metody RK4
+    b) pomiêdzy wêz³ami u sta³e - jak to sie odbije, która wartoœc sta³a zostaje?
+
+ Symulacje sprawdzajace czy algorytm dzia³a poprawnie
+  -> porównaæ przebiegi z takimi co wiemu ¿e poprawne (co poza naszym zasiegiem jest)
+  -> czy system zachowuje sie rozs¹dnie? (ze znajomosci praw fizyki)
+  -> jak reaguje na zmiane d³ugoœci kroku? (10 krotna zmiana kroku nie powinna zminæ
+wartoœci rozwiazania, wyraŸna zmiana to cos nie tak, duze b³edy obliczñ numerycznych)
+nie ma sensu zamieszczaæ wykresów przebiegów trywialnych (uklad w równowadze) 
+tylko napisac ¿e w punkcie równowagi uk³ad sie zatrzymuje
+
+4) Opis problemu sterowania
+Opis problemu pierwotnego, co chcemy rozwiazaæ. Co jest celem i jakich ograniczeñ przestrzegaæ
+co musi byc zachowane. Precyzyjny matematycznie, jasny, 
+Poprawny porvblem inznierski i matematyczny. Kwestia rozwiazywalnosci póŸnie
+
+Problemy pomocnicze: 
+->wprowadzenei funkcji kary
+->czas koñcowy ruchomy (swobodny, podlega optymalizacji) a liczymy z ustalonym czasem
+ciag problemów ze sta³ym horyzontem równowazny problemoi szuak T <- jdnoznacznie napoisaæ
+Do porblemu pomocniczego zastosowaæ analize za pomoc¹ zasady maximów i wyciagnac z tego wnioski
+co do postaci cech steorowania. 
+Mo¿na te¿ zasad maximu dla peirwotnego // nie trzeba
+Konstrukcja równañ sprzê¿onych. 
+
+5) podac algorytm rozwiazywania równañ srzezonych, opisag go dok³¹dnie
+bo wersja nietypowa: symulacja idze wstecz do ty³u, czas sie cofa, Opisaæ
+jak sie wprowadza wartoœci zmiennych stanu. To nie jest standardowe, opisaæ
+
+Czy algo sprzê¿onych dzia³¹ poprawnie: test gradientu psi(0) i iloraz ró¿nicowy 
+wskaŸnika jakosci wzglêdem stanu pocz¹tkowego. BARDZO WA¯NE
+
+6) czesc optymalizacyjna zwiazana z obliczeniami numerycznymi
+sformu³owac indukowany problem programowanie nieiniowego:
+->przyjmujemy pewna parametryzacje sterowania (bang-bang) opisaæ ja i jak powstaje dzieki niej skoñczenie wymiarowy problem progrmowania nieliiniowego
+ograniczenia na zmienne decyzyjne, co jest zmiennymi decyzyjnymi
+->opis algorytmu optymalziacji dla indukowanego skoñczeniewymiarowgo problemu programowania nieliniowego
+    opis BFGS
+    opis poszukiwania na kierunku wykorzystany 
+    algo zewnetrzne w stosunku do BFGS: dobieranie czasu koñcowego, liczby prze³aczeñ starczy dwa 
+-- do t¹d by³¹ czêœæ przygotowawcza, to by³o konstruowanie narzêdzi
+   inzynier je ma zwykle, nie pokaldac zbytniego zaufania w oprogramownaiu profesionanym
+jest z nim bardzo óznie, nawet za drogie pieniadze. bywa Ÿe ¿le dzia³a a nie ma dostepu do 
+kodu i trzeba metoda prób i b³êdów --
+
+
+7) Badania analityczne (??)
+Po dwa ekspery. (zwyle kilkadziesiad, kilkaset sie robi). To jest w³¹siwa praca inz
+
+zasda: w pracy inz jak najwiecej informacji optycznej: wykresy / zestawienia 
+ rysnuki (g³ownie) + opis / komenatrz / co z niego wyniki, dlaczego wprowadzona jakies zmiany
+
+8) Wnioski dotyczace ca³osci pracy 
+->najtrudniejsze dla studentów
+->nie powinno byc powtórzenie 
+-co nauczylismy sie, co nam sie podoba³o co nie podoba³o, co interesujace
+jakie wnioski na przysz³osci w konteksie tej tematyki jaki i ogónych
+
+unikaæ bana³ów, bicia piany
+
+9) Bibliografia
+Ogólan zasada: wszystkie pozycje z których korzystaliœmy 
+oraz takie ktore uznajemy za szczegónie wazne 
+    
+ 
