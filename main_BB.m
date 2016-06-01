@@ -15,15 +15,15 @@ a_max = 30*pi/180; % max angle of table, radians
 u_max = 0.1;
 k=1;
 
-T=10;
+T=4;
 h0 = 0.01; % simulation step
 
-x0=[50 0 0 0 50 0 0 0 0]; %test 1
+x0=[0.1 0 0 0 0.1 0 0 0 0]; %test 1
 xf=[0 0 0 0 0 0 0 0 0];
 
 u0 = [u_max, u_max]';
 tau1 = [1, 2, 3, 4, 5, 6, 7];
-steps=5;
+steps=6;
 tau2 = linspace(0.1, T-0.1, steps);
 tau1 = linspace(0.1, T-0.1, steps);
 % tau1 = [0, T];
@@ -55,7 +55,7 @@ xlabel('x');
 ylabel('y');
 title('Po³o¿enie kulki');
 axis square
-axis([-100 100 -100 100]);
+axis([-l l -l l]);
 legend('punkt pocz¹tkowy','punkt docelowy');
 
 figure;
