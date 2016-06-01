@@ -2,8 +2,8 @@ function [tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, M, Rad, I, g,
 
 %STEP 1 - initial conditions
 disp('step1');
-ep1 = 1e-5;
-ep2 = 1e-5;
+ep1 = 1e-10;
+ep2 = 1e-10;
 
 % x - [n, t1, t2, ..., tn]
 % How chnage length of x beetween iterations
