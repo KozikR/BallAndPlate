@@ -73,6 +73,14 @@ unikaæ bana³ów, bicia piany
 
 9) Bibliografia
 Ogólan zasada: wszystkie pozycje z których korzystaliœmy 
-oraz takie ktore uznajemy za szczegónie wazne 
+oraz takie ktore uznajemy za szczegónie wazne
+
+
+----
+nie w sytuacij twórcy algorytmu, ale w sytuacji inzyniera badacza, szukajacego rozwiazania
+problemu
+
+badanie w celu studialnym, nie do sterowania na bi¿¹co. 
+to jest etap wstêpny do ca³ego 
     
  
