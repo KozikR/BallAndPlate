@@ -15,15 +15,16 @@ a_max = 30*pi/180; % max angle of table, radians
 u_max = 0.1;
 k=1;
 
-T=10;
+T=4;
 h0 = 0.01; % simulation step
 
-x0=[50 0 0 0 50 0 0 0 0]; %test 1
+x0=[0.1 0 0 0 0.1 0 0 0 0]; %test 1
 xf=[0 0 0 0 0 0 0 0 0];
 
 u0 = [u_max, u_max]';
 tau1 = [1, 2, 3, 4, 5, 6, 7];
-steps=5;
+T=4;
+steps=6;
 tau2 = linspace(0.1, T-0.1, steps);
 tau1 = linspace(0.1, T-0.1, steps);
 % tau1 = [0, T];
@@ -41,12 +42,23 @@ q_o= gradientCost_BB(h0, tau1, tau2, u0, M, Rad, I, g, l, a_max, x0, 3e-7, k, T)
 
 %% BFSG
 disp('BFGS');
-tau1_0 = tau1;
-tau2_0 = tau2;
-[tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, M, Rad, I, g, l, a_max, x0, k, xf, T);
-
+T=4;
+Q_hist=[];
+for T=0.1:0.1:5,
+    steps=6;
+    tau2 = linspace(0.1, T-0.1, steps);
+    tau1 = linspace(0.1, T-0.1, steps);
+    tau1_0 = tau1;
+    tau2_0 = tau2;
+    [tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, M, Rad, I, g, l, a_max, x0, k, xf, T);
+    Q_hist=[Q_hist Q];
+end
 
 %% Plot
+Times=0.1:0.01:5;
+plot(Times, Q_hist);
+
+figure
 plot(x0(1),x0(5), '*r');
 hold on
 plot(xf(1),xf(5),'*g');
@@ -55,7 +67,7 @@ xlabel('x');
 ylabel('y');
 title('Po³o¿enie kulki');
 axis square
-axis([-100 100 -100 100]);
+axis([-l l -l l]);
 legend('punkt pocz¹tkowy','punkt docelowy');
 
 figure;
