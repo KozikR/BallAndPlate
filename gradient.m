@@ -4,16 +4,16 @@ function [dQ, x, psi, t, Q] = gradient(tau1, tau2, h0, u0, M, R, I, g, l, a_max,
 [t,psi] = solver_a_BB(n,dtau, cn, x, t, u_out, M, R, I, g, l, a_max, xf, k, T);
 
 dQ = zeros(1, length(tau1)+length(tau2));
-sig1 = -sign(u0(1));
-sig2 = -sign(u0(2))
+sig1 = -u0(1);
+sig2 = -u0(2);
 for i = 1:length(tau1)
     [c, index] = min(abs(t-tau1(i)));
-    dQ(i) = psi(index, 4)*2*a_max*sig1;    
+    dQ(i) = psi(index, 4)*2*sig1;    
     sig1 = -sig1;
 end
 for i = 1:length(tau2)
     [c, index] = min(abs(t-tau2(i)));
-    dQ(length(tau1) + i) = psi(index, 8)*2*a_max*sig2;
+    dQ(length(tau1) + i) = psi(index, 8)*2*sig2;
     sig2 = -sig2;
 end
 

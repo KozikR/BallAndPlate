@@ -21,7 +21,7 @@ h0 = 0.01; % simulation step
 x0=[0.1 0 0 0 0.1 0 0 0 0]; %test 1
 xf=[0 0 0 0 0 0 0 0 0];
 
-u0 = [u_max, u_max]';
+u0 = -[u_max, u_max]';
 tau1 = [1, 2, 3, 4, 5, 6, 7];
 T=4;
 steps=6;
@@ -40,14 +40,28 @@ disp('test');
 q_o= gradientCost_BB(h0, tau1, tau2, u0, M, Rad, I, g, l, a_max, x0, 3e-7, k, T);
 [-psi(1,:); q_o(1:8)']
 
-%% BFSG
+%% single BFSG
+ x0=[0.1 0 0 0 0.09999999999 0 0 0 0];
+T=1.8;
+Tstep=0.01;
+steps=7;
+% u0=-u0
+    tau2_0 = linspace(Tstep, T-Tstep, steps);
+    tau1_0 = linspace(Tstep, T-Tstep, steps);
+%     tau2_0(5)=tau2_0(6)-0.00001;
+    [tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, M, Rad, I, g, l, a_max, x0, k, xf, T);
+    disp(Q);
+%% BFGS
 disp('BFGS');
-T=4;
+x0=[0.1 0 0 0 0.1 0 0 0 0];
 Q_hist=[];
-for T=0.1:0.1:5,
-    steps=6;
-    tau2 = linspace(0.1, T-0.1, steps);
-    tau1 = linspace(0.1, T-0.1, steps);
+Tmin=0.3;
+Tmax=2;
+Tstep=0.1;
+steps=6;
+for T=Tmin:Tstep:Tmax,
+    tau2 = linspace(Tstep, T-Tstep, steps);
+    tau1 = linspace(Tstep, T-Tstep, steps);
     tau1_0 = tau1;
     tau2_0 = tau2;
     [tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, M, Rad, I, g, l, a_max, x0, k, xf, T);
@@ -55,9 +69,14 @@ for T=0.1:0.1:5,
 end
 
 %% Plot
-Times=0.1:0.01:5;
-plot(Times, Q_hist);
+figure;
+T=Tmin:Tstep:Tmax;
+plot(T, Q_hist);
 
+%%
+length(tau1)
+length(tau2)
+[t, x, u_out, n, dtau, cn] = solver_BB(h0, tau1, tau2, u0, M, Rad, I, g, l, a_max, x0, T(end));
 figure
 plot(x0(1),x0(5), '*r');
 hold on
@@ -67,7 +86,7 @@ xlabel('x');
 ylabel('y');
 title('Po³o¿enie kulki');
 axis square
-axis([-l l -l l]);
+% axis([-l l -l l]);
 legend('punkt pocz¹tkowy','punkt docelowy');
 
 figure;
@@ -102,6 +121,7 @@ ylabel('x_1, x_5');
 hold off;
 % axis([0 T -5 5]);
 title('Po³o¿enie kulki w osi x i y');
+legend('x_1','x_2');
 subplot(324);
 hold on;
 plot(t,x(:,2),'r','Linewidth',2);
