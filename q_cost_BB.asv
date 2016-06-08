@@ -1,4 +1,4 @@
-function Q = q_cost_BB(h0, tau1, tau2, u, M, R, I, g, l, a_max, x, k, T)
+function Q = q_cost_BB(h0, tau1, tau2, u0, M, R, I, g, l, a_max, x0, k, T)
 
 tau1 = [0 tau1 T];
 tau2 = [0 tau2 T];
@@ -7,6 +7,10 @@ tau = unique([tau1, tau2]);
 dtau = diff(tau);
 n = ceil(dtau/h0);
 cn = cumsum([1,n]);
+
+x = x0; % initial condition
+u = u0;
+t=0;
 
 for j = 1:length(dtau)
     
@@ -37,6 +41,8 @@ for j = 1:length(dtau)
     if ismember(tau(j), tau2)
         u(2) = -u(2);
     end
+    t = t+h0;
 end
 
-Q=(k*x(9)+x(1:8)*x(1:8)')/2;
+xf = zeros(1,8);
+Q=(k*x(9)+(x(1:8)-xf)*(x(1:8)-xf)')/2;

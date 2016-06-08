@@ -37,7 +37,7 @@ disp('bb_a');
 
 %% Test
 disp('test');
-q_o= gradientCost_BB(h0, tau1, tau2, u0, M, Rad, I, g, l, a_max, x0, 3e-7, k, T);
+q_o= gradientCost_BB(h0, tau1, tau2, u0, M, Rad, I, g, l, a_max, x0, 1e-7, k, T);
 [-psi(1,:); q_o(1:8)']
 
 %% single BFSG

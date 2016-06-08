@@ -1,4 +1,4 @@
-function [dx] = rhs(t,x, u, M, R, I, g, l, a_max)
+function [dx] = rhs(x, u, M, R, I, g, l, a_max)
 dx = zeros(1,9);
 B=M/(M+I/(R^2));
 dx(1) = x(2);
