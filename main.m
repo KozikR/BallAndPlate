@@ -20,6 +20,7 @@ M = 0.040;      % mass of ball, kg
 R = 0.0015;     % Radius of ball, m
 I = 2/5*M*R^2;  % Moment of inertia of ball
 g = 9.81;       % gravitational acceleration
+B=M/(M+I/(R^2));
 
 l = 0.2;        % length of table, m
 a_max = 30*pi/180; % max angle of table, radians
@@ -54,8 +55,8 @@ u = [a1*sin(freq1*tau+phi1)+off1; a2*sin(freq2*tau+phi2)];
 %u=[linspace(0,T,step+1);linspace(0,T,step+1)];
 % % step in rk4, ~0.01
 %% Solving
-[t,x] = solver(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, x0);
-[t,psi] = solver_a(n,dtau, cn, x, t, u, M, R, I, g, l, a_max, xf, k);
+[t,x] = solver(n,dtau, cn, x, t, u, B, g, l, a_max, x0);
+[t,psi] = solver_a(n,dtau, cn, x, u, B, g, l, a_max, xf, k);
 
 %% Q - cost calculation
 % find ep
@@ -65,7 +66,7 @@ ep = zeros(1, ep_number);
 log_ep=logspace(-18, -5, ep_number);
 for i = 1:ep_number 
     ep(i) = log_ep(i);%50e-12;
-    gQ(:,i) = gradientCost(n, dtau, cn, u, M, R, I, g, l, a_max, k, x0, ep(i));
+    gQ(:,i) = gradientCost(n, dtau, cn, u, B, g, l, a_max, k, x0, ep(i));
 end
 
 %% plot gradQ in function of ep
@@ -100,7 +101,7 @@ end
 
 %% Test
 %according to plot ep should be equal to about 40*eps=8.881784197001252e-15
-q_o= gradientCost(n, dtau, cn, u, M, R, I, g, l, a_max, k, x0, 1e-8);
+q_o= gradientCost(n, dtau, cn, u, B, g, l, a_max, k, x0, 1e-8);
 [-psi(1,:); q_o(1:8)']
 
  

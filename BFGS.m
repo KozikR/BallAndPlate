@@ -1,4 +1,4 @@
-function [tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, M, Rad, I, g, l, a_max, x0, k, xf, T)
+function [tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, B, g, l, a_max, x0, k, xf, T)
 
 %STEP 1 - initial conditions
 % disp('step1');
@@ -14,7 +14,7 @@ tau2 = tau2_0;
 tau1_s = tau1;
 tau2_s = tau2;
 
-Qx = q_cost_BB(h0, tau1, tau2, u0, M, Rad, I, g, l, a_max, x0, k, T);
+Qx = q_cost_BB(h0, tau1, tau2, u0, B, g, l, a_max, x0, k, T);
 disp(Qx)
 R = 1;
 
@@ -24,7 +24,7 @@ while 1
 
     %STEP 2 - first STOP condition
 % disp('step2');
-    [gradQ, x, psi, t, Q] = gradient(tau1, tau2, h0, u0, M, Rad, I, g, l, a_max, x0, xf, k, T);
+    [gradQ, x, psi, t, Q] = gradient(tau1, tau2, h0, u0, B, g, l, a_max, x0, xf, k, T);
     if gradQ'*gradQ <= ep1, 
         disp('STEP2 stop');
         break;
@@ -81,7 +81,7 @@ while 1
         %lambda2 = lambda2 / 2;
         tau1_ = tau1+lambda*d(1:length(tau1));
         tau2_ = tau2+lambda*d((length(tau1)+1):(length(tau1)+length(tau2)));
-        Qn = q_cost_BB(h0, tau1_, tau2_, u0, M, Rad, I, g, l, a_max, x0, k, T);
+        Qn = q_cost_BB(h0, tau1_, tau2_, u0, B, g, l, a_max, x0, k, T);
         if(Qn < Qx)
             break;
         end

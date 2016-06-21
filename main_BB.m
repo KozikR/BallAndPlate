@@ -9,6 +9,7 @@ M = 0.040;      % mass of ball, kg
 Rad = 0.0015;     % Radius of ball, m
 I = 2/5*M*Rad^2;  % Moment of inertia of ball
 g = 9.81;       % gravitational acceleration
+B=M/(M+I/(Rad^2));
 
 l = 0.2;        % length of table, m
 a_max = 30*pi/180; % max angle of table, radians
@@ -31,13 +32,13 @@ tau1 = linspace(0.1, T-0.1, steps);
 % tau2 = [0, T];
 %% Solver bang-bang
 disp('bb');
-[t, x, u_out, n, dtau, cn] = solver_BB(h0, tau1, tau2, u0, M, Rad, I, g, l, a_max, x0, T);
+[t, x, u_out, n, dtau, cn] = solver_BB(h0, tau1, tau2, u0, B, g, l, a_max, x0, T);
 disp('bb_a');
-[t,psi] = solver_a_BB(n,dtau, cn, x, t, u_out, M, Rad, I, g, l, a_max, xf, k, T);
+[t,psi] = solver_a_BB(n,dtau, cn, x, t, u_out, B, g, l, a_max, xf, k, T);
 
 %% Test
 disp('test');
-q_o= gradientCost_BB(h0, tau1, tau2, u0, M, Rad, I, g, l, a_max, x0, 1e-7, k, T);
+q_o= gradientCost_BB(h0, tau1, tau2, u0, B, g, l, a_max, x0, 1e-7, k, T);
 [-psi(1,:); q_o(1:8)']
 
 %% single BFSG
@@ -49,7 +50,7 @@ steps=7;
     tau2_0 = linspace(Tstep, T-Tstep, steps);
     tau1_0 = linspace(Tstep, T-Tstep, steps);
 %     tau2_0(5)=tau2_0(6)-0.00001;
-    [tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, M, Rad, I, g, l, a_max, x0, k, xf, T);
+    [tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, B, g, l, a_max, x0, k, xf, T);
     disp(Q);
 %% BFGS
 disp('BFGS');
@@ -64,7 +65,7 @@ for T=Tmin:Tstep:Tmax,
     tau1 = linspace(Tstep, T-Tstep, steps);
     tau1_0 = tau1;
     tau2_0 = tau2;
-    [tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, M, Rad, I, g, l, a_max, x0, k, xf, T);
+    [tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, B, g, l, a_max, x0, k, xf, T);
     Q_hist=[Q_hist Q];
 end
 
@@ -76,7 +77,7 @@ plot(T, Q_hist);
 %%
 length(tau1)
 length(tau2)
-[t, x, u_out, n, dtau, cn] = solver_BB(h0, tau1, tau2, u0, M, Rad, I, g, l, a_max, x0, T(end));
+[t, x, u_out, n, dtau, cn] = solver_BB(h0, tau1, tau2, u0, B, g, l, a_max, x0, T(end));
 figure
 plot(x0(1),x0(5), '*r');
 hold on

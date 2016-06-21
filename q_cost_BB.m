@@ -1,4 +1,4 @@
-function Q = q_cost_BB(h0, tau1, tau2, u, M, R, I, g, l, a_max, x, k, T)
+function Q = q_cost_BB(h0, tau1, tau2, u, B, g, l, a_max, x, k, T)
 
 tau1 = [0 tau1 T];
 tau2 = [0 tau2 T];
@@ -17,16 +17,16 @@ for j = 1:length(dtau)
     h6 = h/6;
     
     for i = cn(j):(cn(j+1)-1)
-        dx1 = rhs(x,u,M, R, I, g, l, a_max);
+        dx1 = rhs(x,u,B, g, l, a_max);
         x1 = x+h2*dx1;
         
-        dx2 = rhs(x1, u, M, R, I, g, l, a_max);
+        dx2 = rhs(x1, u, B, g, l, a_max);
         x2 = x+h2*dx2;
         
-        dx3 = rhs(x2, u, M, R, I, g, l, a_max);
+        dx3 = rhs(x2, u, B, g, l, a_max);
         x3 = x+h*dx3;  % full length step
         
-        dx4 = rhs(x3, u,M, R, I, g, l, a_max); % left-sided limit
+        dx4 = rhs(x3, u,B, g, l, a_max); % left-sided limit
         
         x = x+h3*(dx2+dx3)+h6*(dx1+dx4); % output calculation
     end

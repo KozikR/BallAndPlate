@@ -1,11 +1,10 @@
-function [dz] = rhs_a(z,u,t, M, R, I, g, l, a_max, k)
+function [dz] = rhs_a(z, u, B, g, l, a_max, k)
 dz = zeros(17,1)';
-B=M/(M+I/(R^2));
 
 x=z(1:9);
 psi=z(10:17);
 
-dz(1:9)=rhs(x,u,M,R,I,g,l,a_max);
+dz(1:9)=rhs(x,u,B,g,l,a_max);
 
 dz(1+9)=-B*(x(4)^2*psi(2)+x(4)*x(8)*psi(6))+0.5*k*dr_constarin(x(1), l/2);
 dz(2+9)=-psi(1);

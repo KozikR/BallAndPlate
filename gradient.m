@@ -1,7 +1,7 @@
-function [dQ, x, psi, t, Q] = gradient(tau1, tau2, h0, u0, M, R, I, g, l, a_max, x0, xf, k, T)
+function [dQ, x, psi, t, Q] = gradient(tau1, tau2, h0, u0, B, g, l, a_max, x0, xf, k, T)
 
-[t, x, u_out, n, dtau, cn, cn1, cn2] = solver_BB(h0, tau1, tau2, u0, M, R, I, g, l, a_max, x0, T);
-[t,psi] = solver_a_BB(n,dtau, cn, x, t, u_out, M, R, I, g, l, a_max, xf, k, T);
+[t, x, u_out, n, dtau, cn, cn1, cn2] = solver_BB(h0, tau1, tau2, u0, B, g, l, a_max, x0, T);
+[t,psi] = solver_a_BB(n,dtau, cn, x, t, u_out, B, g, l, a_max, xf, k, T);
 
 dQ = zeros(1, length(tau1)+length(tau2));
 sig1 = -u0(1);
