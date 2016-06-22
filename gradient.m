@@ -32,12 +32,12 @@ for j = 1:length(dtau)
         x(i+1,:) = x(i,:)+h3*(dx2+dx3)+h6*(dx1+dx4); % output calculation
         t(i+1) = t(i)+h; % increasing time
    end       
-   if ismember(tau(j), tau1)
+   if ismember(tau(j+1), tau1)
        u0(1) = -u0(1);
        cn1(j1) = cn(j+1); % wchila czas gdzie prze³aczenie
        j1 = j1+1;       
    end
-   if ismember(tau(j), tau2)
+   if ismember(tau(j+1), tau2)
       u0(2) = -u0(2);
       cn2(j2) = cn(j+1);
       j2 = j2+1;
@@ -70,7 +70,7 @@ for j=length(dtau):-1:1,
        j1 = j1-1;
        u0(1) = -u0(1);
     end
-    if cn(j2) == cn(j)
+    if cn2(j2) == cn(j)
        j2 = j2-1;
        u0(2) = -u0(2);
     end
