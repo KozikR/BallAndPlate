@@ -72,8 +72,7 @@ for j=length(dtau):-1:1,
     end
     if cn(j2) == cn(j)
        j2 = j2-1;
-       u0(2) = -u0(2);
-    end
+       u0(2)
 end
 
 dQ = zeros(1, length(tau1)+length(tau2));

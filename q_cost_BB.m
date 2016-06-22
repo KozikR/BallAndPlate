@@ -1,8 +1,8 @@
 function Q = q_cost_BB(h0, tau1, tau2, u, B, g, l, a_max, x, k, T)
 
-tau1 = [0 tau1 T];
-tau2 = [0 tau2 T];
-tau = unique([tau1, tau2]);
+tau1_ = [0 tau1 T];
+tau2_ = [0 tau2 T];
+tau = unique([tau1_, tau2_]);
 
 dtau = diff(tau);
 n = ceil(dtau/h0);
