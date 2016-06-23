@@ -1,4 +1,4 @@
-function [dQ, x, psi, t, Q] = gradient(tau1, tau2, h0, u0, B, g, l, a_max, x0, xf, k, T)
+function [dQ, x, psi, t, Q, cn1, cn2] = gradient(tau1, tau2, h0, u0, B, g, l, a_max, x0, xf, k, T)
 
 % solver BB
 tau1_ = [0 tau1 T];

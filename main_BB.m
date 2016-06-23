@@ -45,7 +45,7 @@ q_o= gradientCost_BB(h0, tau1, tau2, u0, B, g, l, a_max, x0, 1e-7, k, T);
  x0=[0.1 0 0 0 0.09999999999 0 0 0 0];
 T=1.8;
 Tstep=0.01;
-steps=7;
+steps=4;
 % u0=-u0
     tau2_0 = linspace(Tstep, T-Tstep, steps);
     tau1_0 = linspace(Tstep, T-Tstep, steps);
@@ -56,11 +56,12 @@ steps=7;
 disp('BFGS');
 x0=[0.1 0 0 0 0.1 0 0 0 0];
 Q_hist=[];
-Tmin=0.3;
-Tmax=2;
-Tstep=0.1;
+Tmin=0.5;
+Tmax=5;
+Tstep=0.05;
+Tstep1=0.25;
 steps=6;
-for T=Tmin:Tstep:Tmax,
+for T=Tmin:Tstep1:Tmax,
     tau2 = linspace(Tstep, T-Tstep, steps);
     tau1 = linspace(Tstep, T-Tstep, steps);
     tau1_0 = tau1;
@@ -71,7 +72,7 @@ end
 
 %% Plot
 figure;
-T=Tmin:Tstep:Tmax;
+T=Tmin:Tstep1:Tmax;
 plot(T, Q_hist);
 
 %%
