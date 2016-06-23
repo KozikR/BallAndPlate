@@ -11,7 +11,10 @@ Qx = q_cost_BB(h0, tau1, tau2, u0, B, g, l, a_max, x0, k, T);
 R = 1;
 gradQ_s = [tau1, tau2];
 
-while 1
+iteration = 0;
+
+while iteration < 1000
+    iteration = iteration + 1;
     %STEP 2 - first STOP condition
     [gradQ, x, psi, t, Q, cn1, cn2] = gradient(tau1, tau2, h0, u0, B, g, l, a_max, x0, xf, k, T);
     if gradQ'*gradQ <= ep1, 
@@ -39,7 +42,7 @@ while 1
     tau1_s = tau1;
     tau2_s = tau2;
     gradQ_s = gradQ;
-    max_contraction = 100;    
+    max_contraction = 10;    
     d1=[0, d(1:length(tau1)), 0];
     d2=[0, d(length(tau1)+1:end), 0];
     dd1=diff(d1);

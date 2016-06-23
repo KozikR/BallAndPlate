@@ -1,11 +1,11 @@
-1)strona tytu³owa: rok, kierunek, przedmiot, autorzy
+0)strona tytu³owa: rok, kierunek, przedmiot, autorzy
 
-2) wstep
+1) wstep
 zagadnienie, cel pracy
  krtókie streszczenie co zriobiono w pracy
  omówienie literatury (krótko)
  
- 3) szczególowo omówienie moelu, równaiia stanu, inne liczone rówania, kmentarz opis
+2) szczególowo omówienie moelu, równaiia stanu, inne liczone rówania, kmentarz opis
  podzia³ zmiennych (stanu, sterujace), ograniczenia co wystepuja
  wartoœci parametrów.
  Opis algorytmu s³uzacego do symulacji (rk4). Opisaæ ten algorytm. 
@@ -22,7 +22,7 @@ wartoœci rozwiazania, wyraŸna zmiana to cos nie tak, duze b³edy obliczñ numerycz
 nie ma sensu zamieszczaæ wykresów przebiegów trywialnych (uklad w równowadze) 
 tylko napisac ¿e w punkcie równowagi uk³ad sie zatrzymuje
 
-4) Opis problemu sterowania
+3) Opis problemu sterowania
 Opis problemu pierwotnego, co chcemy rozwiazaæ. Co jest celem i jakich ograniczeñ przestrzegaæ
 co musi byc zachowane. Precyzyjny matematycznie, jasny, 
 Poprawny porvblem inznierski i matematyczny. Kwestia rozwiazywalnosci póŸnie
@@ -36,14 +36,14 @@ co do postaci cech steorowania.
 Mo¿na te¿ zasad maximu dla peirwotnego // nie trzeba
 Konstrukcja równañ sprzê¿onych. 
 
-5) podac algorytm rozwiazywania równañ srzezonych, opisag go dok³¹dnie
+4) podac algorytm rozwiazywania równañ srzezonych, opisag go dok³¹dnie
 bo wersja nietypowa: symulacja idze wstecz do ty³u, czas sie cofa, Opisaæ
 jak sie wprowadza wartoœci zmiennych stanu. To nie jest standardowe, opisaæ
 
 Czy algo sprzê¿onych dzia³¹ poprawnie: test gradientu psi(0) i iloraz ró¿nicowy 
 wskaŸnika jakosci wzglêdem stanu pocz¹tkowego. BARDZO WA¯NE
 
-6) czesc optymalizacyjna zwiazana z obliczeniami numerycznymi
+5) czesc optymalizacyjna zwiazana z obliczeniami numerycznymi
 sformu³owac indukowany problem programowanie nieiniowego:
 ->przyjmujemy pewna parametryzacje sterowania (bang-bang) opisaæ ja i jak powstaje dzieki niej skoñczenie wymiarowy problem progrmowania nieliiniowego
 ograniczenia na zmienne decyzyjne, co jest zmiennymi decyzyjnymi
@@ -57,13 +57,13 @@ jest z nim bardzo óznie, nawet za drogie pieniadze. bywa Ÿe ¿le dzia³a a nie ma 
 kodu i trzeba metoda prób i b³êdów --
 
 
-7) Badania analityczne (??)
+6) Badania analityczne (??)
 Po dwa ekspery. (zwyle kilkadziesiad, kilkaset sie robi). To jest w³¹siwa praca inz
 
 zasda: w pracy inz jak najwiecej informacji optycznej: wykresy / zestawienia 
  rysnuki (g³ownie) + opis / komenatrz / co z niego wyniki, dlaczego wprowadzona jakies zmiany
 
-8) Wnioski dotyczace ca³osci pracy 
+7) Wnioski dotyczace ca³osci pracy 
 ->najtrudniejsze dla studentów
 ->nie powinno byc powtórzenie 
 -co nauczylismy sie, co nam sie podoba³o co nie podoba³o, co interesujace
@@ -71,7 +71,7 @@ jakie wnioski na przysz³osci w konteksie tej tematyki jaki i ogónych
 
 unikaæ bana³ów, bicia piany
 
-9) Bibliografia
+8) Bibliografia
 Ogólan zasada: wszystkie pozycje z których korzystaliœmy 
 oraz takie ktore uznajemy za szczegónie wazne
 

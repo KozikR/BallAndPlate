@@ -28,7 +28,7 @@ disp('BFGS');
 x0=[0.1 0 0 0 0.1 0 0 0 0];
 Q_hist=[];
 Tmin=0.4;
-Tmax=2.4;
+Tmax=5;
 Tstep=0.2;
 
 steps=5;
