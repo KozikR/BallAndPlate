@@ -46,11 +46,11 @@ q_o= gradientCost_BB(h0, tau1, tau2, u0, B, g, l, a_max, x0, 1e-7, k, T);
 T=1.8;
 Tstep=0.01;
 steps=4;
-% u0=-u0
+%  u0=-u0
     tau2_0 = linspace(Tstep, T-Tstep, steps);
     tau1_0 = linspace(Tstep, T-Tstep, steps);
 %     tau2_0(5)=tau2_0(6)-0.00001;
-    [tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, B, g, l, a_max, x0, k, xf, T);
+    [tau1, tau2, x, psi, t, Q,u0] = BFGS(tau1_0, tau2_0, h0, u0, B, g, l, a_max, x0, k, xf, T);
     disp(Q);
 %% BFGS
 disp('BFGS');
@@ -66,7 +66,7 @@ for T=Tmin:Tstep1:Tmax,
     tau1 = linspace(Tstep, T-Tstep, steps);
     tau1_0 = tau1;
     tau2_0 = tau2;
-    [tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, B, g, l, a_max, x0, k, xf, T);
+    [tau1, tau2, x, psi, t, Q,u0] = BFGS(tau1_0, tau2_0, h0, u0, B, g, l, a_max, x0, k, xf, T);
     Q_hist=[Q_hist Q];
 end
 
@@ -154,7 +154,22 @@ hold off;
 title('Prêdkoœæ k¹towa stolika w osi x i y');
 %%
 figure;
-plot(t,psi)
+plot(t,[psi(:,4),psi(:,8)])
 xlabel('t');
 ylabel('\psi');
-legend('\psi_1','\psi_2','\psi_3','\psi_4','\psi_5','\psi_6','\psi_7','\psi_8');
+legend('\psi_4','\psi_8','\psi_3','\psi_4','\psi_5','\psi_6','\psi_7','\psi_8');
+
+u1=zeros(length(tau1)+2,1);
+u2=zeros(length(tau2)+2,1);
+t1=[0 tau1 T];
+t2=[0 tau2 T];
+u1(1)=u0(1);
+u2(2)=u0(2);
+for i=2:length(tau1)+2,
+u1(i)=-u1(i-1);
+end
+for i=2:length(tau1)+2,
+u1(i)=-u1(i-1);
+end
+hold on
+stairs(t1,u1);

@@ -1,4 +1,4 @@
-function [tau1, tau2, x, psi, t, Q] = BFGS(tau1_0, tau2_0, h0, u0, B, g, l, a_max, x0, k, xf, T)
+function [tau1, tau2, x, psi, t, Q,u0] = BFGS(tau1_0, tau2_0, h0, u0, B, g, l, a_max, x0, k, xf, T)
 
 %STEP 1 - initial conditions
 ep1 = 1e-10;
