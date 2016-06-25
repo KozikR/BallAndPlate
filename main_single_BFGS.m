@@ -137,5 +137,4 @@ end
 hold on
 stairs(t1,u1,'Linewidth',2,'Color',[0 0.75 1]);
 grid on
-% yyaxis right
-% ylabel('psi')
+

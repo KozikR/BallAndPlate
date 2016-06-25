@@ -139,8 +139,8 @@ ylabel(hAx(2),'\psi') % right y-axis
 
 u1=zeros(length(tau1)+2,1);
 u2=zeros(length(tau2)+2,1);
-t1=[0 tau1 T];
-t2=[0 tau2 T];
+t1=[0 tau1 T(end)];
+t2=[0 tau2 T(end)];
 u1(1)=u0(1);
 u2(2)=u0(2);
 for i=2:length(tau1)+2,
