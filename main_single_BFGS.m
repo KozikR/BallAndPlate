@@ -112,10 +112,15 @@ hold off;
 title('Prêdkoœæ k¹towa stolika w osi x i y');
 %%
 figure;
-plot(t,[psi(:,4),psi(:,8)])
+values=zeros(length(t),1);
+values(1)=-2*u_max;
+values(end)=2*u_max
+[hAx,hLine1,hLine2] = plotyy(t,values,t,psi(:,4))
 xlabel('t');
-ylabel('\psi');
-legend('\psi_4','\psi_8');
+ylabel('u');
+ylabel(hAx(1),'u') % left y-axis
+ylabel(hAx(2),'\psi') % right y-axis
+
 
 u1=zeros(length(tau1)+2,1);
 u2=zeros(length(tau2)+2,1);
@@ -130,5 +135,7 @@ for i=2:length(tau1)+2,
 u1(i)=-u1(i-1);
 end
 hold on
-stairs(t1,u1,'Linewidth',2);
+stairs(t1,u1,'Linewidth',2,'Color',[0 0.75 1]);
 grid on
+% yyaxis right
+% ylabel('psi')

@@ -16,10 +16,10 @@ a_max = 30*pi/180; % max angle of table, radians
 u_max = 0.1;
 k=1;
 
-T=4;
+
 h0 = 0.01; % simulation step
 
-x0=[0.1 0 0 0 0.1 0 0 0 0]; %test 1
+x0=[0.1 0 0 0 0.2 0 0 0 0]; %test 1
 xf=[0 0 0 0 0 0 0 0 0];
 
 u0 = -[u_max, u_max]';
@@ -31,7 +31,7 @@ Tmin=0.4;
 Tmax=5;
 Tstep=0.2;
 
-steps=5;
+steps=4;
 for T=Tmin:Tstep:Tmax,
 T
     tau2 = linspace((1/(steps+1))*T, (steps/(steps+1))*T, steps);
@@ -127,17 +127,20 @@ hold off;
 title('Prêdkoœæ k¹towa stolika w osi x i y');
 %%
 figure;
-
-subplot(211)
-plot(t,[psi(:,4),psi(:,8)])
+values=zeros(length(t),1);
+values(1)=-2*u_max;
+values(end)=2*u_max
+[hAx,hLine1,hLine2] = plotyy(t,values,t,psi(:,4))
 xlabel('t');
-ylabel('\psi');
-legend('\psi_4','\psi_8','\psi_3','\psi_4','\psi_5','\psi_6','\psi_7','\psi_8');
-grid on
+ylabel('u');
+ylabel(hAx(1),'u') % left y-axis
+ylabel(hAx(2),'\psi') % right y-axis
+
+
 u1=zeros(length(tau1)+2,1);
 u2=zeros(length(tau2)+2,1);
-t1=[0 tau1 T(end)];
-t2=[0 tau2 T(end)];
+t1=[0 tau1 T];
+t2=[0 tau2 T];
 u1(1)=u0(1);
 u2(2)=u0(2);
 for i=2:length(tau1)+2,
@@ -147,5 +150,7 @@ for i=2:length(tau1)+2,
 u1(i)=-u1(i-1);
 end
 hold on
-subplot(212)
-stairs(t1,u1);
+stairs(t1,u1,'Linewidth',2,'Color',[0 0.75 1]);
+grid on
+
+
