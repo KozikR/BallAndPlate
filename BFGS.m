@@ -3,7 +3,7 @@ function [tau1, tau2, x, psi, t, Q,u0] = BFGS(tau1_0, tau2_0, h0, u0, B, g, l, a
 %STEP 1 - initial conditions
 ep1 = 1e-10;
 ep2 = 1e-10;
-ep3=1e-4;
+ep3=1e-5;
 tau1 = tau1_0;
 tau2 = tau2_0;
 tau1_s = tau1;
@@ -30,6 +30,7 @@ while iteration < 1000
             if(psi4_max==psi(1,4) && tau1(1)>2*ep3)
                 tau1=[ep3, tau1]
                 spike_generated=1;
+                u0(1)=-u0(1);
             end
             
         end
@@ -40,15 +41,14 @@ while iteration < 1000
             end
             if(psi8_max==psi(1,8) && tau2(1)>2*ep3)
                 tau2=[ep3, tau2]
+                u0(2)=-u0(2);
                 spike_generated=1;
             end
         end
         if(spike_generated)
-            disp('potrzeba generacji szpilkowej');
-            iteration
             R=1;
             spike_generated=0;
-                continue;
+            continue;
         end
         disp('STEP2 stop');
         break;
