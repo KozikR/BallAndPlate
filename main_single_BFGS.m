@@ -16,7 +16,7 @@ a_max = 30*pi/180; % max angle of table, radians
 u_max = 0.1;
 k=1;
 
-T=2;
+T=2.8;
 h0 = 0.01; % simulation step
 
 x0=[0.1 0 0 0 0.1 0 0 0 0]; %test 1
@@ -119,15 +119,13 @@ stairs(t1,u1,'Linewidth',2,'Color',[0 0.75 1]);
 grid on
 %%
 figure;
-values=zeros(length(t),1);
-values(1)=-2*u_max;
-values(end)=2*u_max;
-[hAx,hLine1,hLine2] = plotyy(t,values,t,psi(:,4));
+
+[hAx,hLine1,hLine2] = plotyy(t,values,t,psi(:,8));
 xlabel('t');
 ylabel('u');
 ylabel(hAx(1),'u_2'); % left y-axis
 ylabel(hAx(2),'\psi_8'); % right y-axis
-%axis(hAx(1),'u_2'); % left y-axis
+
 axis(hAx(2),[0 T -max(abs(psi(:,8))) max(abs(psi(:,8)))]); % right y-axis
 axis(hAx(1),[0 T -2*u_max 2*u_max]);
 for i=2:length(tau2)+2,
