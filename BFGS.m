@@ -12,12 +12,32 @@ R = 1;
 gradQ_s = [tau1, tau2];
 
 iteration = 0;
-
+spike_generated=0;
 while iteration < 1000
     iteration = iteration + 1;
     %STEP 2 - first STOP condition
     [gradQ, x, psi, t, Q, cn1, cn2] = gradient(tau1, tau2, h0, u0, B, g, l, a_max, x0, xf, k, T);
     if gradQ'*gradQ <= ep1, 
+        if psi(1,4)*u0(1)<0            
+            [psi4_max, psi4_max_it]=max(psi(:,4));
+            if(psi4_max==psi(end,4) && tau1(end)<T-eps3*10)
+                tau1(end+1)=T-eps3;
+                spike_generated=1;
+            end
+        end
+        if psi(1,8)*u0(2)<0            
+            [psi8_max, psi8_max_it]=max(psi(:,8));
+            if(psi8_max==psi(end,8) && tau2(end) < T-eps3*10)
+                tau2(end+1)=T-eps3;
+                spike_generated=1;
+            end
+        end
+        if(spike_generated)
+            disp('potrzeba generacji szpilkowej');
+            R=1;
+            spike_generated=0;
+                continue;
+        end
         disp('STEP2 stop');
         break;
     end
@@ -54,18 +74,18 @@ while iteration < 1000
     lambda = min([lambda1, lambda2]);
     while max_contraction > 0,% && Qn > Qx
         max_contraction = max_contraction-1;
-        lambda = lambda / 2;
         tau1_ = tau1+lambda*d(1:length(tau1));
         tau2_ = tau2+lambda*d((length(tau1)+1):(length(tau1)+length(tau2)));
         Qn = q_cost_BB(h0, tau1_, tau2_, u0, B, g, l, a_max, x0, k, T);
         if(Qn < Qx)
             break;
         end
+        lambda = lambda / 2;
     end
     
     tau1 = tau1_;
     tau2 = tau2_;
-    eps3=1e-3;
+    eps3=1e-4;
     changed=0;
     dtau1=diff([0 tau1 T]);
     dtau2=diff([0 tau2 T]);

@@ -27,11 +27,11 @@ u0 = -[u_max, u_max]';
 disp('BFGS');
 x0=[0.1 0 0 0 0.1 0 0 0 0];
 Q_hist=[];
-Tmin=0.4;
-Tmax=5;
-Tstep=0.2;
+Tmin=3;
+Tmax=10;
+Tstep=0.05;
 
-steps=4;
+steps=6;
 for T=Tmin:Tstep:Tmax,
 T
     tau2 = linspace((1/(steps+1))*T, (steps/(steps+1))*T, steps);
@@ -47,7 +47,11 @@ disp('koniec BFGS');
 figure;
 T=Tmin:Tstep:Tmax;
 plot(T, Q_hist);
-
+xlabel('T');
+ylabel('Q(T)');
+[Q_min,Q_min_it] = min(Q_hist);
+disp('T opt:');
+T(Q_min_it)
 %%
 length(tau1)
 length(tau2)
@@ -66,27 +70,7 @@ legend('punkt pocz¹tkowy','punkt docelowy');
 
 figure;
 
-subplot(321)
-%stairs(cumsum(dtau), u_out(1,:),'r','Linewidth',2);
-xlabel('t');
-ylabel('u_1');
-% axis([0 T -1 1]);
-hold off;
-title('Przyspieszenie k¹towe stolika');
-% legend('u_1','u_2');
-subplot(322);
-hold on;
-
-
-
-% stairs(cumsum(dtau), u_out(2,:),'g','Linewidth',2);
-xlabel('t');
-ylabel('u_2');
-% axis([0 T -1 1]);
-hold off;
-title('Przyspieszenie k¹towe stolika');
-% legend('u_1','u_2');
-subplot(323);
+subplot(221);
 hold on;
 
 plot(t,x(:,1),'r','Linewidth',2);
@@ -97,7 +81,7 @@ hold off;
 % axis([0 T -5 5]);
 title('Po³o¿enie kulki w osi x i y');
 legend('x_1','x_2');
-subplot(324);
+subplot(222);
 hold on;
 plot(t,x(:,2),'r','Linewidth',2);
 plot(t,x(:,6),'g','Linewidth',2);
@@ -106,7 +90,7 @@ ylabel('x_2, x_6');
 hold off;
 % axis([0 T -3 3]);
 title('Prêdkoœæ kulki w osi x i y');
-subplot(325);
+subplot(223);
 hold on;
 
 plot(t,x(:,3),'r','Linewidth',2);
@@ -116,7 +100,7 @@ ylabel('x_3, x_7');
 hold off;
 % axis([0 T -0.5 0.5]);
 title('K¹t nachylenia stolika w osi x i y');
-subplot(326);
+subplot(224);
 hold on;
 plot(t,x(:,4),'r','Linewidth',2);
 plot(t,x(:,8),'g','Linewidth',2);
@@ -129,20 +113,20 @@ title('Prêdkoœæ k¹towa stolika w osi x i y');
 figure;
 values=zeros(length(t),1);
 values(1)=-2*u_max;
-values(end)=2*u_max
-[hAx,hLine1,hLine2] = plotyy(t,values,t,psi(:,4))
+values(end)=2*u_max;
+[hAx,hLine1,hLine2] = plotyy(t,values,t,psi(:,4));
 xlabel('t');
 ylabel('u');
-ylabel(hAx(1),'u') % left y-axis
-ylabel(hAx(2),'\psi') % right y-axis
+ylabel(hAx(1),'u_1'); % left y-axis
+ylabel(hAx(2),'\psi_4'); % right y-axis
 
 
 u1=zeros(length(tau1)+2,1);
 u2=zeros(length(tau2)+2,1);
-t1=[0 tau1 T(end)];
-t2=[0 tau2 T(end)];
+t1=[0 tau1 T];
+t2=[0 tau2 T];
 u1(1)=u0(1);
-u2(2)=u0(2);
+u2(1)=u0(2);
 for i=2:length(tau1)+2,
 u1(i)=-u1(i-1);
 end
@@ -152,5 +136,24 @@ end
 hold on
 stairs(t1,u1,'Linewidth',2,'Color',[0 0.75 1]);
 grid on
+%%
+figure;
+values=zeros(length(t),1);
+values(1)=-2*u_max;
+values(end)=2*u_max;
+[hAx,hLine1,hLine2] = plotyy(t,values,t,psi(:,4));
+xlabel('t');
+ylabel('u');
+ylabel(hAx(1),'u_2'); % left y-axis
+ylabel(hAx(2),'\psi_8'); % right y-axis
 
+for i=2:length(tau2)+2,
+u2(i)=-u2(i-1);
+end
+for i=2:length(tau2)+2,
+u2(i)=-u2(i-1);
+end
+hold on
+stairs(t2,u2,'Linewidth',2,'Color',[0 0.75 1]);
+grid on
 
