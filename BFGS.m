@@ -3,6 +3,7 @@ function [tau1, tau2, x, psi, t, Q,u0] = BFGS(tau1_0, tau2_0, h0, u0, B, g, l, a
 %STEP 1 - initial conditions
 ep1 = 1e-10;
 ep2 = 1e-10;
+ep3=1e-4;
 tau1 = tau1_0;
 tau2 = tau2_0;
 tau1_s = tau1;
@@ -16,24 +17,35 @@ spike_generated=0;
 while iteration < 1000
     iteration = iteration + 1;
     %STEP 2 - first STOP condition
+
     [gradQ, x, psi, t, Q, cn1, cn2] = gradient(tau1, tau2, h0, u0, B, g, l, a_max, x0, xf, k, T);
     if gradQ'*gradQ <= ep1, 
-        if psi(1,4)*u0(1)<0            
-            [psi4_max, psi4_max_it]=max(psi(:,4));
-            if(psi4_max==psi(end,4) && tau1(end)<T-eps3*10)
-                tau1(end+1)=T-eps3;
+        [psi4_max, psi4_max_it]=max(abs(psi(psi(:,4)*u0(1)<0,4)));
+        [psi8_max, psi8_max_it]=max(abs(psi(psi(:,8)*u0(2)<0,8)));
+        if ~isempty(psi4_max)        
+            if(psi4_max==psi(end,4) && tau1(end)<T-2*ep3)
+                tau1(end+1)=T-ep3;
                 spike_generated=1;
             end
+            if(psi4_max==psi(1,4) && tau1(1)>2*ep3)
+                tau1=[ep3, tau1]
+                spike_generated=1;
+            end
+            
         end
-        if psi(1,8)*u0(2)<0            
-            [psi8_max, psi8_max_it]=max(psi(:,8));
-            if(psi8_max==psi(end,8) && tau2(end) < T-eps3*10)
-                tau2(end+1)=T-eps3;
+        if ~isempty(psi8_max)                  
+            if(psi8_max==psi(end,8) && tau2(end) < T-2*ep3)
+                tau2(end+1)=T-ep3;
+                spike_generated=1;
+            end
+            if(psi8_max==psi(1,8) && tau2(1)>2*ep3)
+                tau2=[ep3, tau2]
                 spike_generated=1;
             end
         end
         if(spike_generated)
             disp('potrzeba generacji szpilkowej');
+            iteration
             R=1;
             spike_generated=0;
                 continue;
@@ -69,8 +81,8 @@ while iteration < 1000
     dd2=diff(d2);
     dtau1=diff([0 tau1 T]);
     dtau2=diff([0 tau2 T]);
-    lambda1 =min([-dtau1(dd1<0)/dd1(dd1<0), 1]);
-    lambda2 =min([-dtau2(dd2<0)/dd2(dd2<0), 1]);
+    lambda1 =min([-dtau1(dd1<0)./dd1(dd1<0), 1]);
+    lambda2 =min([-dtau2(dd2<0)./dd2(dd2<0), 1]);
     lambda = min([lambda1, lambda2]);
     while max_contraction > 0,% && Qn > Qx
         max_contraction = max_contraction-1;
@@ -85,13 +97,13 @@ while iteration < 1000
     
     tau1 = tau1_;
     tau2 = tau2_;
-    eps3=1e-4;
+
     changed=0;
     dtau1=diff([0 tau1 T]);
     dtau2=diff([0 tau2 T]);
     [min_dtau1, min_dtau_it1]=min(abs(dtau1));
     [min_dtau2, min_dtau_it2]=min(abs(dtau2));
-    if(min_dtau1<eps3)
+    if(min_dtau1<ep3)
         if(min_dtau_it1==length(dtau1))
             tau1(end)=[];
         elseif(min_dtau_it1==1)
@@ -102,7 +114,7 @@ while iteration < 1000
         end
         changed=1;
     end
-    if(min_dtau2<eps3)
+    if(min_dtau2<ep3)
         if(min_dtau_it2==length(dtau2))
             tau2(end)=[];
         elseif(min_dtau_it2==1)

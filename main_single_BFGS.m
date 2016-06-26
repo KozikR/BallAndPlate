@@ -16,17 +16,17 @@ a_max = 30*pi/180; % max angle of table, radians
 u_max = 0.1;
 k=1;
 
-T=3.3;
-h0 = 0.001; % simulation step
+T=2;
+h0 = 0.01; % simulation step
 
 x0=[0.1 0 0 0 0.1 0 0 0 0]; %test 1
 xf=[0 0 0 0 0 0 0 0 0];
 
-u0 = [u_max, u_max]';
+u0 = -[u_max, u_max]';
 
 
 %%  BFSG
-steps=3;
+steps=4;
     tau2_0 = linspace((1/(steps+1))*T, (steps/(steps+1))*T, steps);
     tau1_0 = linspace((1/(steps+1))*T, (steps/(steps+1))*T, steps);
 
@@ -112,6 +112,8 @@ end
 for i=2:length(tau1)+2,
 u1(i)=-u1(i-1);
 end
+axis(hAx(2),[0 T -max(abs(psi(:,4))) max(abs(psi(:,4)))]); % right y-axis
+axis(hAx(1),[0 T -2*u_max 2*u_max]);
 hold on
 stairs(t1,u1,'Linewidth',2,'Color',[0 0.75 1]);
 grid on
@@ -125,7 +127,9 @@ xlabel('t');
 ylabel('u');
 ylabel(hAx(1),'u_2'); % left y-axis
 ylabel(hAx(2),'\psi_8'); % right y-axis
-
+%axis(hAx(1),'u_2'); % left y-axis
+axis(hAx(2),[0 T -max(abs(psi(:,8))) max(abs(psi(:,8)))]); % right y-axis
+axis(hAx(1),[0 T -2*u_max 2*u_max]);
 for i=2:length(tau2)+2,
 u2(i)=-u2(i-1);
 end
