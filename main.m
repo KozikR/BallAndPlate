@@ -27,9 +27,9 @@ u0 = -[u_max, u_max]';
 disp('BFGS');
 x0=[0.1 0 0 0 0.1 0 0 0 0];
 Q_hist=[];
-Tmin=3;
+Tmin=1;
 Tmax=10;
-Tstep=0.05;
+Tstep=0.1;
 
 steps=6;
 for T=Tmin:Tstep:Tmax,
@@ -53,8 +53,6 @@ ylabel('Q(T)');
 disp('T opt:');
 T(Q_min_it)
 %%
-length(tau1)
-length(tau2)
 [dQ, x, psi, t, Q, cn1, cn2] = gradient(tau1, tau2, h0, u0, B, g, l, a_max, x0, xf, k, T(end));
 figure
 plot(x0(1),x0(5), '*r');
@@ -72,7 +70,9 @@ figure;
 
 subplot(221);
 hold on;
-
+T_end=T(end);
+T=[];
+T=T_end;
 plot(t,x(:,1),'r','Linewidth',2);
 plot(t,x(:,5),'g','Linewidth',2);
 xlabel('t');
@@ -123,8 +123,8 @@ ylabel(hAx(2),'\psi_4'); % right y-axis
 
 u1=zeros(length(tau1)+2,1);
 u2=zeros(length(tau2)+2,1);
-t1=[0 tau1 T(end)];
-t2=[0 tau2 T(end)];
+t1=[0 tau1 T];
+t2=[0 tau2 T];
 u1(1)=u0(1);
 u2(1)=u0(2);
 for i=2:length(tau1)+2,
@@ -133,20 +133,22 @@ end
 for i=2:length(tau1)+2,
 u1(i)=-u1(i-1);
 end
+axis(hAx(2),[0 T -max(abs(psi(:,4))) max(abs(psi(:,4)))]); % right y-axis
+axis(hAx(1),[0 T -2*u_max 2*u_max]);
 hold on
 stairs(t1,u1,'Linewidth',2,'Color',[0 0.75 1]);
 grid on
 %%
 figure;
-values=zeros(length(t),1);
-values(1)=-2*u_max;
-values(end)=2*u_max;
-[hAx,hLine1,hLine2] = plotyy(t,values,t,psi(:,4));
+
+[hAx,hLine1,hLine2] = plotyy(t,values,t,psi(:,8));
 xlabel('t');
 ylabel('u');
 ylabel(hAx(1),'u_2'); % left y-axis
 ylabel(hAx(2),'\psi_8'); % right y-axis
 
+axis(hAx(2),[0 T -max(abs(psi(:,8))) max(abs(psi(:,8)))]); % right y-axis
+axis(hAx(1),[0 T -2*u_max 2*u_max]);
 for i=2:length(tau2)+2,
 u2(i)=-u2(i-1);
 end
