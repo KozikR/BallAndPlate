@@ -44,11 +44,11 @@ while iteration < 1000
                 tau1=[ep3*5, tau1];
                 spike_generated=1;
                 u0(1)=-u0(1);
-%             elseif(t(psi4_max_it)>0)
-%                  tau1(end+1)=t(psi4_max_it);
-%                 tau1(end+1)=t(psi4_max_it)+ep3*5;
-%                 tau1=unique(tau1);
-%                 spike_generated=1;  
+            elseif(t(psi4_max_it)>10*ep3 && t(psi4_max_it)<T-10*ep3)
+                 tau1(end+1)=t(psi4_max_it);
+                tau1(end+1)=t(psi4_max_it)+ep3*5;
+                tau1=unique(tau1);
+                spike_generated=1;  
             end
             
         end
@@ -60,11 +60,11 @@ while iteration < 1000
                 tau2=[ep3*5, tau2];
                 u0(2)=-u0(2);
                 spike_generated=1;
-%             elseif(t(psi8_max_it)>0)
-%                 tau2(end+1)=t(psi8_max_it);
-%                 tau2(end+1)=t(psi8_max_it)+ep3*5;
-%                 tau2=unique(tau2);
-%                 spike_generated=1;  
+            elseif(t(psi8_max_it)>10*ep3 && t(psi8_max_it)<T-10*ep3)
+                tau2(end+1)=t(psi8_max_it);
+                tau2(end+1)=t(psi8_max_it)+ep3*5;
+                tau2=unique(tau2);
+                spike_generated=1;  
             end
         end
         if(spike_generated)
