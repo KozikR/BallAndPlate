@@ -3,7 +3,7 @@ function [tau1, tau2, x, psi, t, Q,u0] = BFGS(tau1_0, tau2_0, h0, u0, B, g, l, a
 %STEP 1 - initial conditions
 ep1 = 1e-10;
 ep2 = 1e-10;
-ep3=1e-5;
+ep3=1e-6;
 tau1 = tau1_0;
 tau2 = tau2_0;
 tau1_s = tau1;
@@ -17,37 +17,60 @@ spike_generated=0;
 while iteration < 1000
     iteration = iteration + 1;
     %STEP 2 - first STOP condition
-
+    
     [gradQ, x, psi, t, Q, cn1, cn2] = gradient(tau1, tau2, h0, u0, B, g, l, a_max, x0, xf, k, T);
-    if gradQ'*gradQ <= ep1, 
-        [psi4_max, psi4_max_it]=max(abs(psi(psi(:,4)*u0(1)<0,4)));
-        [psi8_max, psi8_max_it]=max(abs(psi(psi(:,8)*u0(2)<0,8)));
-        if ~isempty(psi4_max)        
-            if(psi4_max==psi(end,4) && tau1(end)<T-2*ep3)
-                tau1(end+1)=T-ep3;
+    if gradQ'*gradQ <= ep1,
+        u=zeros(length(t),2);
+        u(1:cn1(1)-1,1)=u0(1);
+        u(1:cn2(1)-1,2)=u0(2);
+        for iu=1:length(cn1)-2,
+            u(cn1(iu):cn1(iu+1)-1,1)=-u(cn1(iu)-1);
+        end
+        for iu=1:length(cn2)-2,
+            u(cn2(iu):cn2(iu+1)-1,2)=-u(cn2(iu)-1);
+        end
+        u(cn1(end-2):end,1)=-u(cn1(end-2)-1);
+        u(cn2(end-2):end,2)=-u(cn2(end-2)-1);
+        
+        
+        [psi4_max, psi4_max_it]=max(abs(psi(psi(:,4).*u(:,1)<0,4)));
+        [psi8_max, psi8_max_it]=max(abs(psi(psi(:,8).*u(:,2)<0,8)));
+        if ~isempty(psi4_max)
+            if(psi4_max==psi(end,4) && tau1(end)<T-10*ep3)
+                tau1(end+1)=T-5*ep3;
                 spike_generated=1;
-            end
-            if(psi4_max==psi(1,4) && tau1(1)>2*ep3)
-                tau1=[ep3, tau1]
+            
+        elseif(psi4_max==psi(1,4) && tau1(1)>10*ep3)
+                tau1=[ep3*5, tau1];
                 spike_generated=1;
                 u0(1)=-u0(1);
+%             elseif(t(psi4_max_it)>0)
+%                  tau1(end+1)=t(psi4_max_it);
+%                 tau1(end+1)=t(psi4_max_it)+ep3*5;
+%                 tau1=unique(tau1);
+%                 spike_generated=1;  
             end
             
         end
-        if ~isempty(psi8_max)                  
-            if(psi8_max==psi(end,8) && tau2(end) < T-2*ep3)
-                tau2(end+1)=T-ep3;
-                spike_generated=1;
-            end
-            if(psi8_max==psi(1,8) && tau2(1)>2*ep3)
-                tau2=[ep3, tau2]
+        if ~isempty(psi8_max)
+            if(psi8_max==psi(end,8) && tau2(end) < T-10*ep3)
+                tau2(end+1)=T-5*ep3;
+                spike_generated=1;                
+            elseif(psi8_max==psi(1,8) && tau2(1)>10*ep3)
+                tau2=[ep3*5, tau2];
                 u0(2)=-u0(2);
                 spike_generated=1;
+%             elseif(t(psi8_max_it)>0)
+%                 tau2(end+1)=t(psi8_max_it);
+%                 tau2(end+1)=t(psi8_max_it)+ep3*5;
+%                 tau2=unique(tau2);
+%                 spike_generated=1;  
             end
         end
         if(spike_generated)
             R=1;
             spike_generated=0;
+            disp(['gen', num2str(length(d))]);
             continue;
         end
         disp('STEP2 stop');
@@ -55,26 +78,26 @@ while iteration < 1000
     end
     %STEP 3 - setting direction as vector d
     if R == 1
-       W = eye(length(tau1)+length(tau2)); 
+        W = eye(length(tau1)+length(tau2));
     else
-       s = [tau1, tau2] - [tau1_s, tau2_s];
-       s=s';
-       r = gradQ - gradQ_s;
-       r=r';
-       W = W+(r*r')/(s'*r)-(W*(s*s')*W)/(s'*W*s);
+        s = [tau1, tau2] - [tau1_s, tau2_s];
+        s=s';
+        r = gradQ - gradQ_s;
+        r=r';
+        W = W+(r*r')/(s'*r)-(W*(s*s')*W)/(s'*W*s);
     end
-    d = -W^(-1)*gradQ'; 
+    d = -W^(-1)*gradQ';
     d=d';
-    %STEP 4 - check if direction is worth searching on 
+    %STEP 4 - check if direction is worth searching on
     if d'*gradQ >= 0
-       R = 1;
-       continue;
-    end    
+        R = 1;
+        continue;
+    end
     %STEP 5 - saving old previous values
     tau1_s = tau1;
     tau2_s = tau2;
     gradQ_s = gradQ;
-    max_contraction = 10;    
+    max_contraction = 10;
     d1=[0, d(1:length(tau1)), 0];
     d2=[0, d(length(tau1)+1:end), 0];
     dd1=diff(d1);
@@ -97,7 +120,7 @@ while iteration < 1000
     
     tau1 = tau1_;
     tau2 = tau2_;
-
+    
     changed=0;
     dtau1=diff([0 tau1 T]);
     dtau2=diff([0 tau2 T]);
@@ -107,8 +130,8 @@ while iteration < 1000
         if(min_dtau_it1==length(dtau1))
             tau1(end)=[];
         elseif(min_dtau_it1==1)
-                tau1(1)=[];
-                u0(1)=-u0(1);
+            tau1(1)=[];
+            u0(1)=-u0(1);
         else
             tau1((min_dtau_it1-1):min_dtau_it1)=[];
         end
@@ -118,8 +141,8 @@ while iteration < 1000
         if(min_dtau_it2==length(dtau2))
             tau2(end)=[];
         elseif(min_dtau_it2==1)
-                tau2(1)=[];
-                u0(2)=-u0(2);
+            tau2(1)=[];
+            u0(2)=-u0(2);
         else
             tau2((min_dtau_it2-1):min_dtau_it2)=[];
         end
@@ -128,19 +151,19 @@ while iteration < 1000
     if(changed==1)
         R=1;
         continue;
-    end 
+    end
     Qx = Qn;
     % STEP 7 - checking STOP conditions
-    if abs([tau1, tau2]-[tau1_s, tau2_s]) < ep2 
-       if R == 1  
-           disp('STEP7 stop');
-           break;
-       else
-           R = 1;  
-           continue;
-       end
-    else  
-       R = 0;
-    end  
+    if abs([tau1, tau2]-[tau1_s, tau2_s]) < ep2
+        if R == 1
+            disp('STEP7 stop');
+            break;
+        else
+            R = 1;
+            continue;
+        end
+    else
+        R = 0;
+    end
 end
 Q=Qx;
