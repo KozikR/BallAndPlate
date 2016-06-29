@@ -19,7 +19,7 @@ k=1;
 
 h0 = 0.01; % simulation step
 
-x0=[-0.2 0 0 0 0.05 0 0 0 0]; %test 1
+x0=[0.1 0 0 0 0.1 0 0 0 0]; %test 1
 xf=[0 0 0 0 0 0 0 0 0];
 
 u0 = -[u_max, u_max]';
@@ -28,7 +28,7 @@ disp('BFGS');
 Q_hist=[];
 Tmin=1;
 Tmax=10;
-Tstep=0.2;
+Tstep=0.2 ;
 
 steps=8;
 for T=Tmin:Tstep:Tmax,

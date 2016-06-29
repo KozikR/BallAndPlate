@@ -34,45 +34,60 @@ while iteration < 1000
         
         
         [psi4_max, psi4_max_it]=max(abs(psi(psi(:,4).*u(:,1)<0,4)));
+        t_psi4_max=t(psi(:,4).*u(:,1)<0);
         [psi8_max, psi8_max_it]=max(abs(psi(psi(:,8).*u(:,2)<0,8)));
-        if ~isempty(psi4_max)
-            if(psi4_max==psi(end,4) && tau1(end)<T-10*ep3)
-                tau1(end+1)=T-5*ep3;
+        t_psi8_max=t(psi(:,8).*u(:,2)<0);
+        
+        if ~isempty(psi4_max) %&& psi4_max>ep3
+            if(psi4_max==psi(end,4) && tau1(end)<T-4*ep3)
+                tau1(end+1)=T-2*ep3;
                 spike_generated=1;
-            
-        elseif(psi4_max==psi(1,4) && tau1(1)>10*ep3)
-                tau1=[ep3*5, tau1];
+                
+            elseif(psi4_max==psi(1,4) && tau1(1)>4*ep3)
+                tau1=[ep3*2, tau1];
                 spike_generated=1;
                 u0(1)=-u0(1);
-            elseif(t(psi4_max_it)>10*ep3 && t(psi4_max_it)<T-10*ep3)
-                 tau1(end+1)=t(psi4_max_it);
-                tau1(end+1)=t(psi4_max_it)+ep3*5;
-                tau1=unique(tau1);
-                spike_generated=1;  
+            elseif(t_psi4_max(psi4_max_it)>4*ep3 && t_psi4_max(psi4_max_it)<T-4*ep3)
+                [min_t_tau1 min_t_tau1_it]=min(abs(tau1- t_psi4_max(psi4_max_it)));
+                if min_t_tau1>ep3,
+                    tau1(end+1)=t_psi4_max(psi4_max_it)-ep3;
+                    tau1(end+1)=t_psi4_max(psi4_max_it)+ep3;
+                    tau1=unique(tau1);
+                    spike_generated=1;
+                end
             end
-            
+        else
+            disp(['war maksimum spelniony: u1', num2str(psi8_max)]);
+            break;
         end
-        if ~isempty(psi8_max)
-            if(psi8_max==psi(end,8) && tau2(end) < T-10*ep3)
-                tau2(end+1)=T-5*ep3;
-                spike_generated=1;                
-            elseif(psi8_max==psi(1,8) && tau2(1)>10*ep3)
-                tau2=[ep3*5, tau2];
+        if ~isempty(psi8_max)% && psi8_max>ep3
+            if(psi8_max==psi(end,8) && tau2(end) < T-4*ep3)
+                tau2(end+1)=T-2*ep3;
+                spike_generated=1;
+            elseif(psi8_max==psi(1,8) && tau2(1)>4*ep3)
+                tau2=[ep3*2, tau2];
                 u0(2)=-u0(2);
                 spike_generated=1;
-            elseif(t(psi8_max_it)>10*ep3 && t(psi8_max_it)<T-10*ep3)
-                tau2(end+1)=t(psi8_max_it);
-                tau2(end+1)=t(psi8_max_it)+ep3*5;
-                tau2=unique(tau2);
-                spike_generated=1;  
+            elseif(t_psi8_max(psi8_max_it)>4*ep3 && t_psi8_max(psi8_max_it)<T-4*ep3)
+                [min_t_tau2 min_t_tau2_it]=min(abs(tau2- t_psi8_max(psi8_max_it)));
+                if min_t_tau2>ep3,
+                    tau2(end+1)=t_psi8_max(psi8_max_it)-ep3;
+                    tau2(end+1)=t_psi8_max(psi8_max_it)+ep3;
+                    tau2=unique(tau2);
+                    spike_generated=1;
+                end
             end
+        else
+            disp('war maksimum spelniony u2');
+            break
         end
         if(spike_generated)
             R=1;
             spike_generated=0;
-            disp(['gen', num2str(length(d))]);
+            %             disp(['gen', num2str(length(d))]);
             continue;
         end
+        
         disp('STEP2 stop');
         break;
     end
@@ -148,7 +163,7 @@ while iteration < 1000
         end
         changed=1;
     end
-    if(changed==1)
+    if(changed==1);
         R=1;
         continue;
     end
