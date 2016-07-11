@@ -54,45 +54,45 @@ ylabel('x_4, x_8');
 hold off;
 % axis([0 T -1 1]);
 title('Prêdkoœæ k¹towa stolika w osi x i y');
-%%
-figure;
-values=zeros(length(t),1);
-values(1)=-2*u_max;
-values(end)=2*u_max;
-[hAx,hLine1,hLine2] = plotyy(t,values,t,psi(:,4));
-xlabel('t');
-ylabel('u');
-ylabel(hAx(1),'u_1'); % left y-axis
-ylabel(hAx(2),'\psi_4'); % right y-axis
-u1=zeros(length(tau1_his{i})+2,1);
-u2=zeros(length(tau2_his{i})+2,1);
-t1=[0 tau1_his{i} T(i)];
-t2=[0 tau2_his{i} T(i)];
-u1(1)=u0_his{i}(1);
-u2(1)=u0_his{i}(2);
-for j=2:length(tau1_his{i})+2,
-u1(j)=-u1(j-1);
-end
-
-axis(hAx(2),[0 T(i) -max(abs(psi(:,4))) max(abs(psi(:,4)))]); % right y-axis
-axis(hAx(1),[0 T(i) -2*u_max 2*u_max]);
-hold on
-stairs(t1,u1,'Linewidth',2,'Color',[0 0.75 1]);
-grid on
-figure;
-
-[hAx,hLine1,hLine2] = plotyy(t,values,t,psi(:,8));
-xlabel('t');
-ylabel('u');
-ylabel(hAx(1),'u_2'); % left y-axis
-ylabel(hAx(2),'\psi_8'); % right y-axis
-
-axis(hAx(2),[0 T(i) -max(abs(psi(:,8))) max(abs(psi(:,8)))]); % right y-axis
-axis(hAx(1),[0 T(i) -2*u_max 2*u_max]);
-for j=2:length(tau2_his{i})+2,
-u2(j)=-u2(j-1);
-end
-
-hold on
-stairs(t2,u2,'Linewidth',2,'Color',[0 0.75 1]);
-grid on
+ %% Plotting control against switching function
+% figure;
+% values=zeros(length(t),1);
+% values(1)=-2*u_max;
+% values(end)=2*u_max;
+% [hAx,hLine1,hLine2] = plotyy(t,values,t,psi(:,4));
+% xlabel('t');
+% ylabel('u');
+% ylabel(hAx(1),'u_1'); % left y-axis
+% ylabel(hAx(2),'\psi_4'); % right y-axis
+% u1=zeros(length(tau1_his{i})+2,1);
+% u2=zeros(length(tau2_his{i})+2,1);
+% t1=[0 tau1_his{i} T(i)];
+% t2=[0 tau2_his{i} T(i)];
+% u1(1)=u0_his{i}(1);
+% u2(1)=u0_his{i}(2);
+% for j=2:length(tau1_his{i})+2,
+% u1(j)=-u1(j-1);
+% end
+% 
+% axis(hAx(2),[0 T(i) -max(abs(psi(:,4))) max(abs(psi(:,4)))]); % right y-axis
+% axis(hAx(1),[0 T(i) -2*u_max 2*u_max]);
+% hold on
+% stairs(t1,u1,'Linewidth',2,'Color',[0 0.75 1]);
+% grid on
+% figure;
+% 
+% [hAx,hLine1,hLine2] = plotyy(t,values,t,psi(:,8));
+% xlabel('t');
+% ylabel('u');
+% ylabel(hAx(1),'u_2'); % left y-axis
+% ylabel(hAx(2),'\psi_8'); % right y-axis
+% 
+% axis(hAx(2),[0 T(i) -max(abs(psi(:,8))) max(abs(psi(:,8)))]); % right y-axis
+% axis(hAx(1),[0 T(i) -2*u_max 2*u_max]);
+% for j=2:length(tau2_his{i})+2,
+% u2(j)=-u2(j-1);
+% end
+% 
+% hold on
+% stairs(t2,u2,'Linewidth',2,'Color',[0 0.75 1]);
+% grid on

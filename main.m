@@ -15,15 +15,15 @@ k=1;
 
 h0 = 0.01;          % simulation step
 
-x0=[0.1 0 0 0 0.15 0 0 0 0]; 
+x0=[0.1 0 0 0 0.15 0 0 0 0];
 xf=[0 0 0 0 0 0 0 0 0];
 
 u0 = -[u_max, u_max]';
 %% BFGS
-Tmin=1;
-Tmax=3;
+Tmin=2;
+Tmax=4;
 Tstep=0.1;
-steps=8;
+steps=6;
 Q_hist=[]; tau1_his = {}; tau2_his = {}; u0_his = {};
 i=1;
 for T=Tmin:Tstep:Tmax,
@@ -32,7 +32,7 @@ for T=Tmin:Tstep:Tmax,
     tau1_0 = tau1;
     tau2_0 = tau2;
     [tau1, tau2, x, psi, t, Q,u0] = BFGS(tau1_0, tau2_0, h0, u0, B, g, l, a_max, x0, k, xf, T);
-    Q_hist=[Q_hist Q]; tau1_his{i} = tau1; tau2_his{i} = tau2; u0_his{i} = u0; i = i+1; 
+    Q_hist=[Q_hist Q]; tau1_his{i} = tau1; tau2_his{i} = tau2; u0_his{i} = u0; i = i+1;
 end
 %% Searching for the best solution
 T=Tmin:Tstep:Tmax;
