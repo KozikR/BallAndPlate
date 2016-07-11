@@ -19,7 +19,7 @@ while iteration < 1000
     %STEP 2 - first STOP condition
     
     [gradQ, x, psi, t, Q, cn1, cn2] = gradient(tau1, tau2, h0, u0, B, g, l, a_max, x0, xf, k, T);
-    if gradQ'*gradQ <= ep1,
+    if gradQ*gradQ' <= ep1,
         u=zeros(length(t),2);
         u(1:cn1(1)-1,1)=u0(1);
         u(1:cn2(1)-1,2)=u0(2);
@@ -56,9 +56,6 @@ while iteration < 1000
                     spike_generated=1;
                 end
             end
-        else
-            disp(['war maksimum spelniony: u1', num2str(psi8_max)]);
-            break;
         end
         if ~isempty(psi8_max)% && psi8_max>ep3
             if(psi8_max==psi(end,8) && tau2(end) < T-4*ep3)
@@ -77,18 +74,13 @@ while iteration < 1000
                     spike_generated=1;
                 end
             end
-        else
-            disp('war maksimum spelniony u2');
-            break
         end
         if(spike_generated)
             R=1;
             spike_generated=0;
-            %             disp(['gen', num2str(length(d))]);
             continue;
-        end
-        
-        disp('STEP2 stop');
+        end        
+        %disp('STEP2 stop');
         break;
     end
     %STEP 3 - setting direction as vector d
@@ -169,9 +161,9 @@ while iteration < 1000
     end
     Qx = Qn;
     % STEP 7 - checking STOP conditions
-    if abs([tau1, tau2]-[tau1_s, tau2_s]) < ep2
+    if norm([tau1, tau2]-[tau1_s, tau2_s]) < ep2
         if R == 1
-            disp('STEP7 stop');
+            %disp('STEP7 stop');
             break;
         else
             R = 1;
